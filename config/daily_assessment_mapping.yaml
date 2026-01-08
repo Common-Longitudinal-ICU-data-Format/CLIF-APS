@@ -1,0 +1,209 @@
+# =============================================================================
+# CLIF to REDCap Daily Assessment Mapping
+# =============================================================================
+# This file defines the mapping between CLIF wide_df columns and 
+# REDCap daily assessment upload columns.
+#
+# Days: -2 (m2), -1 (m1), 0, 1, 2, 3, 4, 5, 6, 7
+# Suffix mapping: m2 = Day -2, m1 = Day -1, 0-7 = Days 0-7
+# =============================================================================
+
+# Day suffixes for REDCap column naming
+day_suffixes:
+  -2: "m2"
+  -1: "m1"
+  0: "0"
+  1: "1"
+  2: "2"
+  3: "3"
+  4: "4"
+  5: "5"
+  6: "6"
+  7: "7"
+
+# Days to process (relative to enrollment)
+days_to_process: [-2, -1, 0, 1, 2, 3, 4, 5, 6, 7]
+
+# =============================================================================
+# Vitals Mapping (closest to 8am)
+# =============================================================================
+vitals_8am:
+  vital_sbp:
+    redcap_col: "daily_sbp_8a"
+    description: "Systolic blood pressure closest to 8am"
+    units: "mmHg"
+  vital_dbp:
+    redcap_col: "daily_dbp_8a"
+    description: "Diastolic blood pressure closest to 8am"
+    units: "mmHg"
+  vital_spo2:
+    redcap_col: "daily_spo2_8a"
+    description: "SpO2 closest to 8am"
+    units: "%"
+
+# =============================================================================
+# Vitals - Lowest/Highest Values
+# =============================================================================
+vitals_extreme:
+  vital_spo2:
+    redcap_col: "daily_spo2_lowest"
+    aggregation: "min"
+    description: "Lowest SpO2 on this day"
+    units: "%"
+
+# =============================================================================
+# Labs Mapping (closest to 8am)
+# Each lab has a value column and a "not collected" flag column
+# =============================================================================
+labs_8am:
+  lab_wbc:
+    redcap_col: "daily_wbc_8a"
+    redcap_nc_col: "daily_wbc_nc"
+    description: "WBC count closest to 8am"
+    units: "x10^3/mcl"
+  lab_hemoglobin:
+    redcap_col: "daily_hgb_8a"
+    redcap_nc_col: "daily_hgb_nc"
+    description: "Hemoglobin closest to 8am"
+    units: "g/dL"
+  # Note: Hematocrit not in CLIF - will be marked as not collected
+  lab_platelet_count:
+    redcap_col: "daily_platelet_8a"
+    redcap_nc_col: "daily_platelet_nc"
+    description: "Platelet count closest to 8am"
+    units: "x10^3/mcl"
+  lab_neutrophils_absolute:
+    redcap_col: "daily_anc_8a"
+    redcap_nc_col: "daily_anc_nc"
+    description: "Absolute neutrophil count closest to 8am"
+    units: "x10^3/mcl"
+  lab_lymphocytes_absolute:
+    redcap_col: "daily_alc_8a"
+    redcap_nc_col: "daily_alc_nc"
+    description: "Absolute lymphocyte count closest to 8am"
+    units: "x10^3/mcl"
+  lab_sodium:
+    redcap_col: "daily_na_8a"
+    redcap_nc_col: "daily_na_nc"
+    description: "Sodium closest to 8am"
+    units: "mmol/L"
+  lab_potassium:
+    redcap_col: "daily_k_8a"
+    redcap_nc_col: "daily_k_nc"
+    description: "Potassium closest to 8am"
+    units: "mmol/L"
+  lab_bicarbonate:
+    redcap_col: "daily_bicarb_8a"
+    redcap_nc_col: "daily_bicarb_nc"
+    description: "Bicarbonate closest to 8am"
+    units: "mmol/L"
+  lab_bun:
+    redcap_col: "daily_bun_8a"
+    redcap_nc_col: "daily_bun_nc"
+    description: "BUN closest to 8am"
+    units: "mg/dL"
+  lab_glucose_serum:
+    redcap_col: "daily_gluc_8a"
+    redcap_nc_col: "daily_gluc_nc"
+    description: "Glucose closest to 8am"
+    units: "mg/dL"
+  lab_creatinine:
+    redcap_col: "daily_cr_8a"
+    redcap_nc_col: "daily_cr_nc"
+    description: "Creatinine closest to 8am"
+    units: "mg/dL"
+  lab_albumin:
+    redcap_col: "daily_alb_8a"
+    redcap_nc_col: "daily_alb_nc"
+    description: "Albumin closest to 8am"
+    units: "g/dL"
+  lab_bilirubin_total:
+    redcap_col: "daily_tbili_8a"
+    redcap_nc_col: "daily_tbili_nc"
+    description: "Total bilirubin closest to 8am"
+    units: "mg/dL"
+  lab_ast:
+    redcap_col: "daily_ast_8a"
+    redcap_nc_col: "daily_ast_nc"
+    description: "AST closest to 8am"
+    units: "U/L"
+  lab_alt:
+    redcap_col: "daily_alt_8a"
+    redcap_nc_col: "daily_alt_nc"
+    description: "ALT closest to 8am"
+    units: "U/L"
+  lab_inr:
+    redcap_col: "daily_inr_8a"
+    redcap_nc_col: "daily_inr_nc"
+    description: "INR closest to 8am"
+    units: ""
+  lab_ptt:
+    redcap_col: "daily_ptt_8a"
+    redcap_nc_col: "daily_ptt_nc"
+    description: "PTT closest to 8am"
+    units: "seconds"
+  lab_crp:
+    redcap_col: "daily_crp_8a"
+    redcap_nc_col: "daily_crp_nc"
+    description: "CRP closest to 8am"
+    units: "mg/L"
+  lab_procalcitonin:
+    redcap_col: "daily_pct_8a"
+    redcap_nc_col: "daily_pct_nc"
+    description: "Procalcitonin closest to 8am"
+    units: "ng/mL"
+  lab_ferritin:
+    redcap_col: "daily_ferritin_8a"
+    redcap_nc_col: "daily_ferritin_nc"
+    description: "Ferritin closest to 8am"
+    units: "ng/mL"
+
+# =============================================================================
+# Labs - Highest Values (aggregated across the day)
+# =============================================================================
+labs_highest:
+  lab_lactate:
+    redcap_col: "daily_highest_lactate"
+    redcap_nc_col: "daily_lactate_nc"
+    aggregation: "max"
+    description: "Highest lactate on this day"
+    units: "mmol/L"
+  lab_troponin_t:
+    redcap_col: "daily_highest_troponin"
+    redcap_nc_col: "daily_troponin_nc"
+    aggregation: "max"
+    description: "Highest troponin on this day"
+    units: "ng/mL"
+  # Note: High sensitivity troponin - using troponin_t as fallback
+  # lab_troponin_hs:
+  #   redcap_col: "daily_highest_hstroponin"
+  #   redcap_nc_col: "daily_hstroponin_nc"
+  #   aggregation: "max"
+  #   description: "Highest HS troponin on this day"
+  #   units: "ng/L"
+
+# =============================================================================
+# Labs NOT in CLIF (will always be marked as not collected)
+# =============================================================================
+labs_not_in_clif:
+  - redcap_col: "daily_hct_8a"
+    redcap_nc_col: "daily_hct_nc"
+    description: "Hematocrit - NOT IN CLIF"
+  - redcap_col: "daily_ddimer_8a"
+    redcap_nc_col: "daily_ddimer_nc"
+    description: "D-dimer - NOT IN CLIF"
+  - redcap_col: "daily_fibrinogen_8a"
+    redcap_nc_col: "daily_fibrinogen_nc"
+    description: "Fibrinogen - NOT IN CLIF"
+  - redcap_col: "daily_highest_hstroponin"
+    redcap_nc_col: "daily_hstroponin_nc"
+    description: "High sensitivity troponin - NOT IN CLIF"
+
+# =============================================================================
+# Output Configuration
+# =============================================================================
+output:
+  filename: "daily_assessment_upload.csv"
+  record_id_format: "{patient_id}"  # Format for record_id column
+  redcap_event_name: "daily_inhospital_f_arm_1"
+

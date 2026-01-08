@@ -1,0 +1,821 @@
+APS Section,APS Response Options/Requirements,CLIF Table,CLIF Variable,CLIF Category,CLIF Group or additional variables,Mapping Notes
+Enrollment/Demographics,Age at enrollment,hospitalization,age_at_admission,,,
+Enrollment/Demographics,Sex at birth,patient,sex_category,,,
+Enrollment/Demographics,Race,patient,race_category,,,
+Enrollment/Demographics,Ethnicity,patient,ethnicity_category,,,
+Enrollment/Demographics,Language,patient,language_category,,,
+Enrollment/Demographics,Admission date/time,hospitalization,admission_dttm,,,
+Enrollment/Demographics,Discharge date/time,hospitalization,discharge_dttm,,,
+Enrollment/Demographics,Additional demogs+ hospitalization details,patient,death_dttm,,,
+Enrollment/Demographics,Additional demogs+ hospitalization details,hospitalization,discharge_category,,,
+Enrollment/Demographics,Additional demogs+ hospitalization details,hospitalization,admission_type_category,,,
+Enrollment/Demographics,Hospital location type,adt,location_category,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"SpO2 closest to 8am on this day:
+Record a ""stable"" SpO2, which is an SpO2 that is representative of the patient's lung function and not
+fluctuating due to other factors, such as a bad
+connection between probe and patient, a procedure, or
+transient mucous plug.",vitals ,vital_category,spo2,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Respiratory support at time of SpO2 measurement closest to 8am on this day: 
+ECMO and invasive mechanical ventilation
+ECMO without invasive mechanical ventilation
+Invasive mechanical ventilation without ECMO
+Non-invasive ventilation
+High-flow nasal oxygen (high flow nasal oxygen)
+Standard flow supplemental oxygen
+No respiratory support or supplemental oxygen
+(spontaneously breathing room air)
+Unknown",respiratory_support,device_category,,,all categories
+Daily Assessment / SOFA Scoring [Day -2 to 7],Respiratory support at time of SpO2 measurement closest to 8am on this day: ,ecmo_mcs,device_category,,,Not in 2.1; needs to be added
+Daily Assessment / SOFA Scoring [Day -2 to 7],IMV at time of SpO2 measurement closest to 8am: Ventilator Mode:,respiratory_support,mode_category,,,all categories
+Daily Assessment / SOFA Scoring [Day -2 to 7],IMV at time of SpO2 measurement closest to 8am: Fio2 (FiO2 set in device),respiratory_support,"device_category
+",,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"IMV at time of SpO2 measurement closest to 8am: PEEP
+(also known as expiratory positive airway pressure, EPAP): ",respiratory_support,"device_category
+",imv,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],,vitals ,vital_category,spo2,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],,respiratory_support,peep_set,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],,respiratory_support,fio2_set,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"IMV at time of SpO2 measurement closest to 8am:
+Inspiratory Positive Airway Pressure (IPAP): ",respiratory_support,,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"IMV at time of SpO2 measurement closest to 8am:
+Pressure Support:",respiratory_support,pressure_support_set,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"IMV at time of SpO2 measurement closest to 8am: Set
+Driving Pressure:",respiratory_support,,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"IMV at time of SpO2 measurement closest to 8am: Tidal
+Volume set on device:",respiratory_support,tidal_volume_set,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"IMV at time of SpO2 measurement closest to 8am:
+Observed Tidal Volume return from patient: 
+
+(respiratory rate observed from the patient, not set
+in the device)",respiratory_support,tidal_volume_obs,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"IMV at time of SpO2 measurement closest to 8am: Mean
+Airway Pressure:",respiratory_support,mean_airway_pressure_obs,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"IMV at time of SpO2 measurement closest to 8am: Peak
+Airway Pressure:",respiratory_support,peak_inspiratory_pressure_obs,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"IMV at time of SpO2 measurement closest to 8am:
+Plateau Pressure:",respiratory_support,plateau_pressure_obs,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"IMV at time of SpO2 measurement closest to 8am: Minute
+Ventilation reading from ventilator device: ",respiratory_support,minute_vent_obs,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Non-invasive Mechanical Ventilation settings closest to 8am: Mode: ,respiratory_support,mode_category,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Non-invasive Mechanical Ventilation closest to 8am:
+Expiratory Positive Airway Pressure (EPAP) (EPAP set in the device)",respiratory_support,,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Non-invasive Mechanical Ventilation closest to 8am:
+Inspiratory Positive Airway Pressure (IPAP) (IPAP set in the device; for BiPAP only)",respiratory_support,,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Non-invasive Mechanical Ventilation closest to 8am:
+FiO2
+(FiO2 set in the device)",respiratory_support,fio2_set,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Non-invasive Mechanical Ventilation closest to 8am:
+Respiratory Rate 
+
+(respiratory rate observed from the patient, not set
+in the device)",respiratory_support,resp_rate_obs,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Non-invasive Mechanical Ventilation closest to 8am:
+Tidal Volume
+(tidal volume observed from the patient, not set in
+the device)",respiratory_support,tidal_volume_obs,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"High Flow Nasal Cannula closest to 8am: Flow Rate
+(Oxygen flow rate set in the device)",respiratory_support,lpm_set,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"High Flow Nasal Cannula closest to 8am: FiO2
+(FiO2 set in the device) ",respiratory_support,fio2_set,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"High Flow Nasal Cannula closest to 8am: Respiratory
+Rate
+(respiratory rate observed from the patient, not set
+in the device)",respiratory_support,resp_rate_obs,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Standard flow oxygen (nasal cannula or mask) closest
+to 8am: Flow Rate
+
+(Oxygen flow rate set in the device)",respiratory_support,lpm_set,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Standard flow oxygen (nasal cannula or mask) closest
+to 8am: Respiratory Rate 
+(respiratory rate observed from the patient, not set
+in the device)",respiratory_support,resp_rate_obs,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Lowest Daily SpO2 and PaO2,vitals ,vital_category,spo2,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Lowest Daily SpO2 and PaO2,labs,lab_category,po2_arterial,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Lowest SpO2 on this day:
+Record a ""stable"" SpO2, which is an SpO2 that is representative of the patient's lung function and not
+fluctuating due to other factors, such as a bad
+connection between probe and patient, a procedure, or
+transient mucous plug.",vitals ,vital_category. ,spo2,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Respiratory support at the time of lowest SpO2 measurement on this day: ,respiratory_support,,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"FiO2 at the time of the lowest SpO2 measurement on
+this day (for IMV, NIV, HFNC):",respiratory_support,fio2_set,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Supplemental oxygen flow rate at the time of the
+lowest SpO2 measurement on this day (standard
+supplemental oxygen):",respiratory_support,lpm_set,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Was at least one PaO2 value available on this day? ,labs,lab_category,po2_arterial,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Lowest PaO2 on this day: (must be from an arterial, not venous, sample) ",labs,lab_category,po2_arterial,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Time of lowest PaO2 on this day:,labs,lab_category,po2_arterial,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Arterial pH at the time of the lowest PaO2 on this
+day:
+(use same ABG result as lowest PaO2)",labs,lab_category,ph_arterial,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"PaCO2 at the time of the lowest PaO2 on this day:
+(use same ABG result as lowest PaO2)",labs,lab_category,pco2_arterial,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],SaO2 at the time of the lowest PaO2 on this day:,labs,lab_category ,so2_arterial,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Respiratory support at the time of the lowest PaO2 on this day: ,respiratory_support,,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"FiO2 at the time of the lowest PaO2 on this day (IMV,
+NIV, HFNC):",respiratory_support,fio2_set,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"Supplemental oxygen flow rate at the time of the
+lowest PaO2 on this day (standard flow supplemental oxygen):",respiratory_support,"device_category
+lpm_set",,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],SpO2 at the time of the lowest PaO2 on this day:,vitals ,vital_category,spo2,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Systolic blood pressure closest to 8am on this day:,vitals ,vital_category,sbp,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Diastolic blood pressure closest to 8am on this day:,vitals ,vital_category,dbp,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],"What intravenous vasopressor/inotrope was infusing at the time the blood pressure values closest to 8am were measured on this day? [check all that apply] 
+",,,,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],norepinephrine,medication_admin_continuous,med_category,norepinephrine,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],epinephrine,medication_admin_continuous,med_category,epinephrine,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],phenylephrine,medication_admin_continuous,med_category,phenylephrine,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],vasopressin,medication_admin_continuous,med_category,vasopressin,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],dopamine,medication_admin_continuous,med_category,dopamine,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],dobutamine,medication_admin_continuous,med_category,dobutamine,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],angiotensin II,medication_admin_continuous,med_category,angiotensin,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],milrinone,medication_admin_continuous,med_category,milrinone,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Glasgow coma scale (GCS) closest to 8am on this day:,patient_assessment,assessment_category,gcs_total,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Nutrition administration closest to 8am on this day ,,,,,Not in CLIF
+Daily Assessment / SOFA Scoring [Day -2 to 7],WBC,labs,lab_category,wbc,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Hemoglobin,labs,lab_category,hemoglobin,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Hematocrit,labs,lab_category,,,Not in CLIF
+Daily Assessment / SOFA Scoring [Day -2 to 7],Platelet count,labs,lab_category,platelet_count,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Absolute Neutrophil Count,labs,lab_category,neutrophils_absolute,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Absolute Lymphocyte Count,labs,lab_category,lymphocytes_absolute,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Sodium,labs,lab_category,sodium,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Potassium,labs,lab_category,potassium,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Bicarbonate,labs,lab_category,bicarbonate,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],BUN,labs,lab_category,bun,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Glucose,labs,lab_category,glucose_serum,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Creatinine,labs,lab_category,creatinine,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Albumin,labs,lab_category,albumin,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Total Bilirubin,labs,lab_category,bilirubin_total,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],AST,labs,lab_category,ast,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],ALT,labs,lab_category,alt,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],INR,labs,lab_category,inr,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],PTT,labs,lab_category,ptt,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],CRP,labs,lab_category,crp,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Procalcitonin,labs,lab_category,procalcitonin,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Ferritin,labs,lab_category,ferritin,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],D dimer,labs,lab_category,,,Not in CLIF
+Daily Assessment / SOFA Scoring [Day -2 to 7],Fibrinogen,labs,lab_category,,,Not in CLIF
+Daily Assessment / SOFA Scoring [Day -2 to 7],Lactate,labs,lab_category,lactate,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],Troponin,labs,lab_category,troponin_i,,
+Daily Assessment / SOFA Scoring [Day -2 to 7],High Sensitivity Troponin,labs,lab_category,troponin_t,,
+vitals_day0,,vitals ,vital_category,temp_c,,
+vitals_day0,,vitals ,vital_category,height_in,,
+vitals_day0,,vitals ,vital_category,sbp,,
+vitals_day0,,vitals ,vital_category,dbp,,
+vitals_day0,,vitals ,vital_category,heart_rate,,
+vitals_day0,,vitals ,vital_category,weight_kg,,
+Baseline_Med_History,"There are multiple section with different prior conditions, we can get this info from hospital diagnosis table ",hospital_diagnosis,diagnosis_code,,,Discuss what all ICD codes to include 
+fluid_balance_day-2_3,,intake_output,,,,Not in CLIF
+NBBAL & Paired CPT,NBBAL attempted (yes/no),,,,,Not in CLIF-- add to patient procedures??
+NBBAL & Paired CPT,FiO2 prior to procedure,respiratory_support,fio2_set,,,
+NBBAL & Paired CPT,PEEP prior to procedure,respiratory_support,peep_set,,,
+NBBAL & Paired CPT,SpO2 prior to procedure,vitals ,vital_value,spo2,,
+NBBAL & Paired CPT,Volume instilled (mL),,,,,
+NBBAL & Paired CPT,Volume returned (mL),,,,,
+NBBAL & Paired CPT,Post-procedure FiO2,respiratory_support,fio2_set,,,
+NBBAL & Paired CPT,Post-procedure SpO2,vitals ,vital_value,spo2,,
+NBBAL & Paired CPT,Hypoxemic event (10% drop SpO2),,,,,
+NBBAL & Paired CPT,NBBAL Cell (CryoStor) aliquots,,,,,Not in CLIF
+NBBAL & Paired CPT,NBBAL Fluid for Metagenomics,,,,,Not in CLIF; new procedure_code under patient_procedures??
+NBBAL & Paired CPT,CPT paired specimen collected,,,,,Not in CLIF
+sedation_delirium_day-2_7,Lowest Richmond Agitation-Sedation Scale (RASS) on this day:,patient_assessment,assessment_category,RASS,,
+sedation_delirium_day-2_7,Highest Richmond Agitation-Sedation Scale (RASS) on this day:,patient_assessment,assessment_category,RASS,,
+sedation_delirium_day-2_7,Confusion Assessment Method (CAM) or CAM-ICU,patient_assessment,assessment_category,cam_total,,
+sedation_delirium_day-2_7,Highest Intensive Care Delirium Screening Checklist,patient_assessment,,,,Not in CLIF or which assessment to include here??
+in_hosp_treatment_day-2_7,Systemic antibiotics (antibacterials),,,,,
+in_hosp_treatment_day-2_7,Amikacin,medication_admin_intermittent,med_category,amikacin,,
+in_hosp_treatment_day-2_7,Amoxicillin,medication_admin_intermittent,med_category,amoxicillin,,
+in_hosp_treatment_day-2_7,Amoxicillin-clavulanate (Augmentin),medication_admin_intermittent,med_category,amoxicillin_clavulanate,,
+in_hosp_treatment_day-2_7,Ampicillin,medication_admin_intermittent,med_category,ampicillin,,
+in_hosp_treatment_day-2_7,Ampicillin-sulbactam (Unasyn),medication_admin_intermittent,med_category,ampicillin_sulbactam,,
+in_hosp_treatment_day-2_7,Azithromycin,medication_admin_intermittent,med_category,azithromycin,,
+in_hosp_treatment_day-2_7,Cefaclor,medication_admin_intermittent,med_category,cefaclor,,
+in_hosp_treatment_day-2_7,Cefazolin,medication_admin_intermittent,med_category,cefazolin,,
+in_hosp_treatment_day-2_7,Cefepime,medication_admin_intermittent,med_category,cefepime,,
+in_hosp_treatment_day-2_7,Cefotaxime,medication_admin_intermittent,med_category,cefotaxime,,
+in_hosp_treatment_day-2_7,Cefoxitin,medication_admin_intermittent,med_category,cefoxitin,,
+in_hosp_treatment_day-2_7,Ceftazidime,medication_admin_intermittent,med_category,ceftazidime,,
+in_hosp_treatment_day-2_7,Ceftriaxone,medication_admin_intermittent,med_category,ceftriaxone,,
+in_hosp_treatment_day-2_7,Cefuroxime,medication_admin_intermittent,med_category,cefuroxime,,
+in_hosp_treatment_day-2_7,Cephalexin,medication_admin_intermittent,med_category,cephalexin,,
+in_hosp_treatment_day-2_7,Ciprofloxacin,medication_admin_intermittent,med_category,ciprofloxacin,,
+in_hosp_treatment_day-2_7,Clarithromycin,medication_admin_intermittent,med_category,clarithromycin,,
+in_hosp_treatment_day-2_7,Clindamycin,medication_admin_intermittent,med_category,clindamycin,,
+in_hosp_treatment_day-2_7,Daptomycin,medication_admin_intermittent,med_category,daptomycin,,
+in_hosp_treatment_day-2_7,Dicloxacillin,medication_admin_intermittent,med_category,dicloxacillin,,
+in_hosp_treatment_day-2_7,Doripenem,medication_admin_intermittent,med_category,doripenem,,
+in_hosp_treatment_day-2_7,Doxycycline,medication_admin_intermittent,med_category,doxycycline,,
+in_hosp_treatment_day-2_7,Ertapenem,medication_admin_intermittent,med_category,ertapenem,,
+in_hosp_treatment_day-2_7,Erythromycin,medication_admin_intermittent,med_category,erythromycin,,
+in_hosp_treatment_day-2_7,Gentamicin,medication_admin_intermittent,med_category,gentamicin,,
+in_hosp_treatment_day-2_7,Imipenem,medication_admin_intermittent,med_category,imipenem,,
+in_hosp_treatment_day-2_7,Levofloxacin,medication_admin_intermittent,med_category,levofloxacin,,
+in_hosp_treatment_day-2_7,Linezolid,medication_admin_intermittent,med_category,linezolid,,
+in_hosp_treatment_day-2_7,Meropenem,medication_admin_intermittent,med_category,meropenem,,
+in_hosp_treatment_day-2_7,Metronidazole (Flagyl),medication_admin_intermittent,med_category,metronidazole,,
+in_hosp_treatment_day-2_7,Moxifloxacin,medication_admin_intermittent,med_category,moxifloxacin,,
+in_hosp_treatment_day-2_7,Nafcillin,medication_admin_intermittent,med_category,nafcillin,,
+in_hosp_treatment_day-2_7,Nitrofurantoin (Macrobid),medication_admin_intermittent,med_category,nitrofurantoin,,
+in_hosp_treatment_day-2_7,Ofloxacin,medication_admin_intermittent,med_category,ofloxacin,,
+in_hosp_treatment_day-2_7,Oxacillin,medication_admin_intermittent,med_category,oxacillin,,
+in_hosp_treatment_day-2_7,Penicillin,medication_admin_intermittent,med_category,penicillin,,
+in_hosp_treatment_day-2_7,Piperacillin-tazobactam (Zosyn),medication_admin_intermittent,med_category,piperacillin_tazobactam,,
+in_hosp_treatment_day-2_7,Streptomycin,medication_admin_intermittent,med_category,streptomycin,,
+in_hosp_treatment_day-2_7,Sulfamethoxazole with trimethoprim (Bactrim),medication_admin_intermittent,med_category,trimethoprim_sulfamethoxazole,,
+in_hosp_treatment_day-2_7,Tobramycin,medication_admin_intermittent,med_category,tobramycin,,
+in_hosp_treatment_day-2_7,Vancomycin,medication_admin_intermittent,med_category,vancomycin,,
+in_hosp_treatment_day-2_7,Systemic antifungal agent(s) ,,,,,
+in_hosp_treatment_day-2_7,amphotericin,medication_admin_intermittent,med_category,amphotericin_b,,
+in_hosp_treatment_day-2_7,anidulafungin,medication_admin_intermittent,med_category,anidulafungin,,
+in_hosp_treatment_day-2_7,caspofungin,medication_admin_intermittent,med_category,caspofungin,,
+in_hosp_treatment_day-2_7,clotrimazole,,,,,Not in CLIF
+in_hosp_treatment_day-2_7,econazole,,,,,Not in CLIF
+in_hosp_treatment_day-2_7,fluconazole,medication_admin_intermittent,med_category,fluconazole,,
+in_hosp_treatment_day-2_7,Itraconazole,medication_admin_intermittent,med_category,itraconazole,,
+in_hosp_treatment_day-2_7,ketoconazole,,,,,Not in CLIF
+in_hosp_treatment_day-2_7,micafungin,medication_admin_intermittent,med_category,micafungin,,
+in_hosp_treatment_day-2_7,miconazole,,,,,Not in CLIF
+in_hosp_treatment_day-2_7,nystatin,medication_admin_intermittent,med_category,nystatin,,
+in_hosp_treatment_day-2_7,terbinafine,,,,,Not in CLIF
+in_hosp_treatment_day-2_7,voriconazole,medication_admin_intermittent,med_category,voriconazole,,
+in_hosp_treatment_day-2_7,Systemic antiviral agent(s) ,,,,,
+in_hosp_treatment_day-2_7,Acyclovir,medication_admin_intermittent,med_category,acyclovir,,
+in_hosp_treatment_day-2_7,Baloxavir,medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Ganciclovir,medication_admin_intermittent,med_category,ganciclovir,,
+in_hosp_treatment_day-2_7,Hepatitis C virus medication,medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,HIV medications,medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Molnupiravir (Lageviro),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Nirmatrelvir-ritonavir (Paxlovid),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Oseltamivir (Tamiflu),medication_admin_intermittent,med_category,oseltamivir,,
+in_hosp_treatment_day-2_7,Passive immunity therapy against influenza,medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Passive immunity therapy against RSV,medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Passive immunity therapy against SARS-CoV-2,medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Peramivir,medication_admin_intermittent,med_category,peramivir,,
+in_hosp_treatment_day-2_7,Remdesivir (IV only),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Valacyclovir (Valtrex),medication_admin_intermittent,med_category,valacyclovir,,
+in_hosp_treatment_day-2_7,Zanamivir,medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,"Systemic corticosteroids (such as oral, intravenous,
+muscular)",,,,,
+in_hosp_treatment_day-2_7,Dexamethasone,medication_admin_intermittent,med_category,dexamethasone,,
+in_hosp_treatment_day-2_7,Hydrocortisone,medication_admin_intermittent,med_category,hydrocortisone,,
+in_hosp_treatment_day-2_7,Methylprednisolone,medication_admin_intermittent,med_category,methylprednisolone,,
+in_hosp_treatment_day-2_7,Prednisolone,medication_admin_intermittent,med_category,prednisolone,,
+in_hosp_treatment_day-2_7,Prednisone,medication_admin_intermittent,med_category,prednisone,,
+in_hosp_treatment_day-2_7,Immunomodulatory agent(s) other than corticosteroids,,,,,
+in_hosp_treatment_day-2_7,abatacept (Orencia),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,adalimumab (Humira and biosimilars),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,alefacept (Amevive),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,anakinra (Kineret),medication_admin_intermittent,med_category,anakinra,,
+in_hosp_treatment_day-2_7,auranofin (Ridaura),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,aurothioglucose (Solganal),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,azathioprine (Imuran Azasan),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,basiliximab (Simulect),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,belatacept (Nulojix),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,belimumab (Benlysta),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,bevacizumab (Avastin and biosimilars),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,brentuximab vedotin (Adcetris),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,certolizumab pegol (Cimzia),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,cyclophosphamide (Neosar Cytoxan),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,cyclosporine (Sandimmune Neoral etc),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,daclizumab (Zenapax),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,denosumab (Prolia Xgeva etc),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,eculizumab (Soliris),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,efalizumab (Raptiva),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,etanercept (Enbrel and biosimilars),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,gold sodium thiomalate,medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,golimumab (Simponi),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,hydroxychloroquine (Plaquenil),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,idecabtagene vicleucel (Abecma),medication_admin_intermittent,med_category,idecabtagene_vicleucel,car_t,
+in_hosp_treatment_day-2_7,infliximab (Remicade and biosimilars),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,interferon alfacon-1 (Infergen),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,ipilimumab (Yervoy),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,leflunomide (Arava),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,methotrexate (Trexall etc),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,mycophenolate mofetil (CellCept),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,mycophenolate sodium (Myfortic),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,natalizumab (Tysabri),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,ofatumumab (Arzerra Kesimpta),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,pertuzumab (Perjeta),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,rituximab (Rituxan and biosimilars),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,sirolimus (Rapamune),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,sulfasalazine (Azulfidine),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,tacrolimus (Prograf etc),medication_admin_continuous,med_category,tacrolimus,,This is a continuous med. CHECK
+in_hosp_treatment_day-2_7,tocilizumab (Actemra etc),medication_admin_intermittent,med_category,tocilizumab,,
+in_hosp_treatment_day-2_7,trastuzumab (Herceptin and biosimilars),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,ustekinumab (Stelara etc),medication_admin_intermittent,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Anticoagulation (therapeutic dosing) ,,,,,
+in_hosp_treatment_day-2_7,Apixaban (Eliquis),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Betrixaban (Bevyxxa),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Dabigatran (Pradaxa),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Edoxaban (Savaysa),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Enoxaparin (Lovenox),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Heparin unfractionated,medication_admin_continuous,med_category,heparin,anticoagulation,
+in_hosp_treatment_day-2_7,Rivaroxaban (Xarelto),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Warfarin (Coumadin),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Anti-platelet agent(s),,,,,
+in_hosp_treatment_day-2_7,Aspirin (regular use),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Clopidogrel (Plavix),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Dipyridamole (Persantine),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Dipyridamole/Aspirin (Aggrenox),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Eptifibatide (Integrilin),medication_admin_continuous,med_category,eptifibatide,anticoagulation,
+in_hosp_treatment_day-2_7,Prasugrel (Effient),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Ticagrelor (Brilinta),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Ticlopidine (Ticlid),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Sedation/opioid,,,,,
+in_hosp_treatment_day-2_7,Dilaudid (hydromorphone),medication_admin_continuous,med_category,hydromorphone,sedation,
+in_hosp_treatment_day-2_7,Dilaudid (hydromorphone),medication_admin_intermittent,med_category,hydromorphone,analgesia,
+in_hosp_treatment_day-2_7,Morphine,medication_admin_continuous,med_category,morphine,sedation,
+in_hosp_treatment_day-2_7,Morphine,medication_admin_intermittent,med_category,morphine,analgesia,
+in_hosp_treatment_day-2_7,Fentanyl,medication_admin_continuous,med_category,fentanyl,sedation,
+in_hosp_treatment_day-2_7,Fentanyl,medication_admin_intermittent,med_category,fentanyl,analgesia,
+in_hosp_treatment_day-2_7,Lorazepam,medication_admin_continuous,med_category,lorazepam,sedation,
+in_hosp_treatment_day-2_7,Lorazepam,medication_admin_intermittent,med_category,lorazepam,anxiolytic,
+in_hosp_treatment_day-2_7,Midazolam,medication_admin_continuous,med_category,midazolam,sedation,
+in_hosp_treatment_day-2_7,Midazolam,medication_admin_intermittent,med_category,midazolam,sedation,
+in_hosp_treatment_day-2_7,Dexmedetomidine,medication_admin_continuous,med_category,dexmedetomidine,sedation,
+in_hosp_treatment_day-2_7,Propofol,medication_admin_continuous,med_category,propofol,sedation,
+in_hosp_treatment_day-2_7,Propofol,medication_admin_intermittent,med_category,propofol,sedation,
+in_hosp_treatment_day-2_7,Ketamine,medication_admin_continuous,med_category,ketamine,sedation,
+in_hosp_treatment_day-2_7,Ketamine,medication_admin_intermittent,med_category,ketamine,sedation,
+in_hosp_treatment_day-2_7,Prone positioning,position,position_category,prone ,,
+in_hosp_treatment_day-2_7,Chemical paralysis - Cisatracurium,medication_admin_continuous,med_category,cisatracurium,paralytics,
+in_hosp_treatment_day-2_7,Chemical paralysis - Cisatracurium,medication_admin_intermittent,med_category,cisatracurium,paralytics,
+in_hosp_treatment_day-2_7,Chemical paralysis - Rocuronium,medication_admin_continuous,med_category,rocuronium,paralytics,
+in_hosp_treatment_day-2_7,Chemical paralysis - Rocuronium,medication_admin_intermittent,med_category,rocuronium,paralytics,
+in_hosp_treatment_day-2_7,Chemical paralysis - Vecuronium,medication_admin_continuous,med_category,vecuronium,paralytics,
+in_hosp_treatment_day-2_7,Chemical paralysis - Vecuronium,medication_admin_intermittent,med_category,vecuronium,paralytics,
+in_hosp_treatment_day-2_7,Chemical paralysis - Atracurium,medication_admin_intermittent,med_category,atracurium,paralytics,
+in_hosp_treatment_day-2_7,Chemical paralysis - Succinylcholine,medication_admin_intermittent,med_category,succinylcholine,paralytics,
+in_hosp_treatment_day-2_7,Continuous insulin infusion,medication_admin_continuous,med_category,insulin,endocrine,
+in_hosp_treatment_day-2_7,Inhaled nitric oxide,medication_admin_continuous,med_category,nitric_oxide,pulmonary vasodilators (inhaled),
+in_hosp_treatment_day-2_7,Inhaled prostacycline - Epoprostenol,medication_admin_continuous,med_category,epoprostenol,pulmonary vasodilators (IV),
+in_hosp_treatment_day-2_7,Inhaled prostacycline - Treprostinil,medication_admin_continuous,med_category,treprostinil,pulmonary vasodilators (IV),
+in_hosp_treatment_day-2_7,Blood product transfusion,,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Packed red blood cells (units),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Platelets (units),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Fresh frozen plasma (units),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Cryoprecipitate (units),,,,,Not in CLIF
+in_hosp_treatment_day-2_7,Whole blood (units),,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Blood Culture Pathogen detected:,,,,fluid_category,
+Positive Clinical Pathogen Testing Results [Through Day 14],Acinetobacter baumannii,microbiology_culture,organism_category,acinetobacter_baumannii,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Aspergillus flavus,microbiology_culture,organism_category,aspergillus_flavus,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Aspergillus fumigatus,microbiology_culture,organism_category,aspergillus_fumigatus,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Candida albicans,microbiology_culture,organism_category,candida_albicans,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Candida glabrata,microbiology_culture,organism_category,candida_glabrata,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Citrobacter freundii,microbiology_culture,organism_category,citrobacter_freundii,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Citrobacter koseri,microbiology_culture,organism_category,citrobacter_koseri,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Cryptococcus neoformans,microbiology_culture,organism_category,cryptococcus_neoformans,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Enterobacter cloacae,microbiology_culture,organism_category,enterobacter_cloacae,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Enterococcus faecalis,microbiology_culture,organism_category,enterococcus_faecalis,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Enterococcus faecium,microbiology_culture,organism_category,enterococcus_faecium,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Escherichia coli,microbiology_culture,organism_category,escherichia_coli,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Haemophilus influenzae,microbiology_culture,organism_category,haemophilus_influenzae,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Klebsiella aerogenes,microbiology_culture,organism_category,klebsiella_aerogenes,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Klebsiella oxytoca,microbiology_culture,organism_category,klebsiella_oxytoca,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Klebsiella pneumoniae,microbiology_culture,organism_category,klebsiella_pneumoniae,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Neisseria meningitidis,microbiology_culture,organism_category,neisseria_meningitidis,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Proteus mirabilis,microbiology_culture,organism_category,proteus_mirabilis,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Proteus vulgaris,microbiology_culture,organism_category,proteus_vulgaris,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Pseudomonas aeruginosa,microbiology_culture,organism_category,pseudomonas_aeruginosa,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Salmonella enterica,microbiology_culture,organism_category,salmonella_enterica,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Serratia marcescens,microbiology_culture,organism_category,serratia_marcescens,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Shigella dysenteriae,,,,,Not in CLIF - only shigella_sonnei exists in schema
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus aureus (methicillin sensitivity not specified),microbiology_culture,organism_category,staphylococcus_aureus,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus aureus methicillin resistant (MRSA),microbiology_culture,organism_category,staphylococcus_aureus,blood_buffy,Map to staphylococcus_aureus then check microbiology_susceptibility for methicillin/oxacillin resistance
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus aureus methicillin sensitive (MSSA),microbiology_culture,organism_category,staphylococcus_aureus,blood_buffy,Map to staphylococcus_aureus then check microbiology_susceptibility for methicillin/oxacillin susceptibility
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus coagulase negative not otherwise specified,microbiology_culture,organism_category,staphylococcus_coagneg,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus epidermidis,microbiology_culture,organism_category,staphylococcus_epidermidis,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus haemolyticus,microbiology_culture,organism_category,staphylococcus_haemolyticus,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus hominis,microbiology_culture,organism_category,staphylococcus_hominis,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus lugdunensis,microbiology_culture,organism_category,staphylococcus_lugdunensis,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Stenotrophomonas maltophilia,microbiology_culture,organism_category,stenotrophomonas_maltophilia,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus mitis,microbiology_culture,organism_category,streptococcus_mitis,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus mutans,microbiology_culture,organism_category,streptococcus_mutans,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus pneumoniae,microbiology_culture,organism_category,streptococcus_pneumoniae,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus pyogenes,microbiology_culture,organism_category,streptococcus_pyogenes,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus sanguinis,microbiology_culture,organism_category,streptococcus_sanguinis,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus viridans group not otherwise specified,microbiology_culture,organism_category,streptococcus_viridans,blood_buffy,
+Positive Clinical Pathogen Testing Results [Through Day 14],Urine Culture Pathogen detected ,,,,fluid_category,
+Positive Clinical Pathogen Testing Results [Through Day 14],Acinetobacter baumannii,microbiology_culture,organism_category,acinetobacter_baumannii,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Aspergillus flavus,microbiology_culture,organism_category,aspergillus_flavus,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Aspergillus fumigatus,microbiology_culture,organism_category,aspergillus_fumigatus,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Candida albicans,microbiology_culture,organism_category,candida_albicans,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Candida glabrata,microbiology_culture,organism_category,candida_glabrata,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Citrobacter freundii,microbiology_culture,organism_category,citrobacter_freundii,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Citrobacter koseri,microbiology_culture,organism_category,citrobacter_koseri,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Cryptococcus neoformans,microbiology_culture,organism_category,cryptococcus_neoformans,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Enterobacter cloacae,microbiology_culture,organism_category,enterobacter_cloacae,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Enterococcus faecalis,microbiology_culture,organism_category,enterococcus_faecalis,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Enterococcus faecium,microbiology_culture,organism_category,enterococcus_faecium,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Escherichia coli,microbiology_culture,organism_category,escherichia_coli,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Haemophilus influenzae,microbiology_culture,organism_category,haemophilus_influenzae,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Klebsiella aerogenes,microbiology_culture,organism_category,klebsiella_aerogenes,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Klebsiella oxytoca,microbiology_culture,organism_category,klebsiella_oxytoca,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Klebsiella pneumoniae,microbiology_culture,organism_category,klebsiella_pneumoniae,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Neisseria meningitidis,microbiology_culture,organism_category,neisseria_meningitidis,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Proteus mirabilis,microbiology_culture,organism_category,proteus_mirabilis,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Proteus vulgaris,microbiology_culture,organism_category,proteus_vulgaris,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Pseudomonas aeruginosa,microbiology_culture,organism_category,pseudomonas_aeruginosa,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Salmonella enterica,microbiology_culture,organism_category,salmonella_enterica,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Serratia marcescens,microbiology_culture,organism_category,serratia_marcescens,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Shigella dysenteriae,,,,,Not in CLIF - only shigella_sonnei exists in schema
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus aureus (methicillin sensitivity not specified),microbiology_culture,organism_category,staphylococcus_aureus,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus aureus methicillin resistant (MRSA),microbiology_culture,organism_category,staphylococcus_aureus,kidneys_renal_pelvis_ureters_bladder,Map to staphylococcus_aureus then check microbiology_susceptibility for methicillin/oxacillin resistance
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus aureus methicillin sensitive (MSSA),microbiology_culture,organism_category,staphylococcus_aureus,kidneys_renal_pelvis_ureters_bladder,Map to staphylococcus_aureus then check microbiology_susceptibility for methicillin/oxacillin susceptibility
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus coagulase negative not otherwise specified,microbiology_culture,organism_category,staphylococcus_coagneg,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus epidermidis,microbiology_culture,organism_category,staphylococcus_epidermidis,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus haemolyticus,microbiology_culture,organism_category,staphylococcus_haemolyticus,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus hominis,microbiology_culture,organism_category,staphylococcus_hominis,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus lugdunensis,microbiology_culture,organism_category,staphylococcus_lugdunensis,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Stenotrophomonas maltophilia,microbiology_culture,organism_category,stenotrophomonas_maltophilia,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus mitis,microbiology_culture,organism_category,streptococcus_mitis,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus mutans,microbiology_culture,organism_category,streptococcus_mutans,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus pneumoniae,microbiology_culture,organism_category,streptococcus_pneumoniae,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus pyogenes,microbiology_culture,organism_category,streptococcus_pyogenes,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus sanguinis,microbiology_culture,organism_category,streptococcus_sanguinis,kidneys_renal_pelvis_ureters_bladder,
+Positive Clinical Pathogen Testing Results [Through Day 14],What was the colony count (colony forming units/mL (CFU)? ,,,,,
+Positive Clinical Pathogen Testing Results [Through Day 14],Respiratory sample molecular or antigen test Pathogen identified:,,,,fluid_category,
+Positive Clinical Pathogen Testing Results [Through Day 14],Adenovirus,,,,,Not in CLIF - nonculture schema only has 3 organisms
+Positive Clinical Pathogen Testing Results [Through Day 14],Coronavirus 229E,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Coronavirus HKU1,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Coronavirus NL63,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Coronavirus OC43,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],SARS-CoV-2 (COVID-19),microbiology_nonculture,organism_category,sars_cov2,respiratory_tract OR nasopharynx_upperairway,
+Positive Clinical Pathogen Testing Results [Through Day 14],Human Metapneumovirus,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Human Rhinovirus/Enterovirus,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Influenza virus not further characterized,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Bordetella parapertussis,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Bordetella pertussis,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Chlamydia pneumoniae,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Mycoplasma pneumoniae,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Influenza A virus,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Influenza B virus,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Parainfluenza virus 1,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Parainfluenza virus 2,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Parainfluenza virus 3,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Parainfluenza virus 4,,,,,Not in CLIF
+Positive Clinical Pathogen Testing Results [Through Day 14],Respiratory syncytial virus (RSV),microbiology_nonculture,organism_category,respiratory_syncytial_virus,respiratory_tract OR nasopharynx_upperairway,Check if we can get it from non culture
+Positive Clinical Pathogen Testing Results [Through Day 14],Source of Respiratory Culture:,,,,,
+Positive Clinical Pathogen Testing Results [Through Day 14],Tracheal aspirate,microbiology_culture,fluid_category,respiratory_tract_lower,,Confirm
+Positive Clinical Pathogen Testing Results [Through Day 14],Non-Bronchoscopic BAL (NBBAL),microbiology_culture,fluid_category,respiratory_tract_lower,,Confirm
+Positive Clinical Pathogen Testing Results [Through Day 14],BAL,microbiology_culture,fluid_category,respiratory_tract_lower,,Confirm
+Positive Clinical Pathogen Testing Results [Through Day 14],Sputum,microbiology_culture,fluid_category,respiratory_tract,,Confirm
+Positive Clinical Pathogen Testing Results [Through Day 14],Respiratory Culture Pathogen detected: ,,,,fluid_category,
+Positive Clinical Pathogen Testing Results [Through Day 14],Acinetobacter baumannii,microbiology_culture,organism_category,acinetobacter_baumannii,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Aspergillus flavus,microbiology_culture,organism_category,aspergillus_flavus,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Aspergillus fumigatus,microbiology_culture,organism_category,aspergillus_fumigatus,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Candida albicans,microbiology_culture,organism_category,candida_albicans,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Candida glabrata,microbiology_culture,organism_category,candida_glabrata,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Citrobacter freundii,microbiology_culture,organism_category,citrobacter_freundii,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Citrobacter koseri,microbiology_culture,organism_category,citrobacter_koseri,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Cryptococcus neoformans,microbiology_culture,organism_category,cryptococcus_neoformans,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Enterobacter cloacae,microbiology_culture,organism_category,enterobacter_cloacae,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Enterococcus faecalis,microbiology_culture,organism_category,enterococcus_faecalis,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Enterococcus faecium,microbiology_culture,organism_category,enterococcus_faecium,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Escherichia coli,microbiology_culture,organism_category,escherichia_coli,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Haemophilus influenzae,microbiology_culture,organism_category,haemophilus_influenzae,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Klebsiella aerogenes,microbiology_culture,organism_category,klebsiella_aerogenes,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Klebsiella oxytoca,microbiology_culture,organism_category,klebsiella_oxytoca,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Klebsiella pneumoniae,microbiology_culture,organism_category,klebsiella_pneumoniae,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Neisseria meningitidis,microbiology_culture,organism_category,neisseria_meningitidis,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Proteus mirabilis,microbiology_culture,organism_category,proteus_mirabilis,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Proteus vulgaris,microbiology_culture,organism_category,proteus_vulgaris,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Pseudomonas aeruginosa,microbiology_culture,organism_category,pseudomonas_aeruginosa,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Salmonella enterica,microbiology_culture,organism_category,salmonella_enterica,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Serratia marcescens,microbiology_culture,organism_category,serratia_marcescens,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Shigella dysenteriae,,,,,Not in CLIF - only shigella_sonnei exists in schema
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus aureus (methicillin sensitivity not specified),microbiology_culture,organism_category,staphylococcus_aureus,respiratory_tract_lower,use susceptibility table for resistance
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus aureus methicillin resistant (MRSA),microbiology_culture,organism_category,staphylococcus_aureus,respiratory_tract_lower,Map to staphylococcus_aureus then check microbiology_susceptibility for methicillin/oxacillin resistance
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus aureus methicillin sensitive (MSSA),microbiology_culture,organism_category,staphylococcus_aureus,respiratory_tract_lower,Map to staphylococcus_aureus then check microbiology_susceptibility for methicillin/oxacillin susceptibility
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus coagulase negative not otherwise specified,microbiology_culture,organism_category,staphylococcus_coagneg,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus epidermidis,microbiology_culture,organism_category,staphylococcus_epidermidis,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus haemolyticus,microbiology_culture,organism_category,staphylococcus_haemolyticus,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus hominis,microbiology_culture,organism_category,staphylococcus_hominis,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus lugdunensis,microbiology_culture,organism_category,staphylococcus_lugdunensis,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Stenotrophomonas maltophilia,microbiology_culture,organism_category,stenotrophomonas_maltophilia,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus mitis,microbiology_culture,organism_category,streptococcus_mitis,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus mutans,microbiology_culture,organism_category,streptococcus_mutans,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus pneumoniae,microbiology_culture,organism_category,streptococcus_pneumoniae,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus pyogenes,microbiology_culture,organism_category,streptococcus_pyogenes,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus sanguinis,microbiology_culture,organism_category,streptococcus_sanguinis,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus viridans group not otherwise specified,microbiology_culture,organism_category,streptococcus_viridans,respiratory_tract_lower,
+Positive Clinical Pathogen Testing Results [Through Day 14],Stool Pathogen detected:,,,,,
+Positive Clinical Pathogen Testing Results [Through Day 14],C. difficile (culture),microbiology_culture,organism_category,clostridium_difficile,"feces_stool (fluid category), culture (method_category)",
+Positive Clinical Pathogen Testing Results [Through Day 14],C. difficile (PCR/molecular),microbiology_nonculture,organism_category,clostridium_difficile,"feces_stool (fluid category), pcr (method_category)",
+Positive Clinical Pathogen Testing Results [Through Day 14],Viral pathogen,,,,,Not in CLIF - no stool viral pathogens (rotavirus norovirus adenovirus astrovirus etc.)
+Positive Clinical Pathogen Testing Results [Through Day 14],Bacterial pathogen,,,,,Not in CLIF as general category - specific bacteria like salmonella_enterica shigella_sonnei campylobacter_jejuni exist in culture schema
+Positive Clinical Pathogen Testing Results [Through Day 14],Source of positive test,,,,,
+Positive Clinical Pathogen Testing Results [Through Day 14],Thoracentesis,microbiology_culture,fluid_category,pleural_cavity_fluid,,
+Positive Clinical Pathogen Testing Results [Through Day 14],Paracentesis,microbiology_culture,fluid_category,peritoneum,,
+Positive Clinical Pathogen Testing Results [Through Day 14],Arthrocentesis,microbiology_culture,fluid_category,joints,,
+Positive Clinical Pathogen Testing Results [Through Day 14],CSF,microbiology_culture,fluid_category,meninges_csf,,
+Positive Clinical Pathogen Testing Results [Through Day 14],Abscess,microbiology_culture,fluid_category,skin_rash_pustules_abscesses,,
+Positive Clinical Pathogen Testing Results [Through Day 14],Other Culture Pathogen detected ,,,,fluid_category,
+Positive Clinical Pathogen Testing Results [Through Day 14],Acinetobacter baumannii,microbiology_culture,organism_category,acinetobacter_baumannii,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Aspergillus flavus,microbiology_culture,organism_category,aspergillus_flavus,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Aspergillus fumigatus,microbiology_culture,organism_category,aspergillus_fumigatus,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Candida albicans,microbiology_culture,organism_category,candida_albicans,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Candida glabrata,microbiology_culture,organism_category,candida_glabrata,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Citrobacter freundii,microbiology_culture,organism_category,citrobacter_freundii,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Citrobacter koseri,microbiology_culture,organism_category,citrobacter_koseri,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Cryptococcus neoformans,microbiology_culture,organism_category,cryptococcus_neoformans,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Enterobacter cloacae,microbiology_culture,organism_category,enterobacter_cloacae,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Enterococcus faecalis,microbiology_culture,organism_category,enterococcus_faecalis,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Enterococcus faecium,microbiology_culture,organism_category,enterococcus_faecium,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Escherichia coli,microbiology_culture,organism_category,escherichia_coli,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Haemophilus influenzae,microbiology_culture,organism_category,haemophilus_influenzae,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Klebsiella aerogenes,microbiology_culture,organism_category,klebsiella_aerogenes,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Klebsiella oxytoca,microbiology_culture,organism_category,klebsiella_oxytoca,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Klebsiella pneumoniae,microbiology_culture,organism_category,klebsiella_pneumoniae,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Neisseria meningitides,microbiology_culture,organism_category,neisseria_meningitidis,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Proteus mirabilis,microbiology_culture,organism_category,proteus_mirabilis,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Proteus vulgaris,microbiology_culture,organism_category,proteus_vulgaris,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Pseudomonas aeruginosa,microbiology_culture,organism_category,pseudomonas_aeruginosa,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Salmonella enterica,microbiology_culture,organism_category,salmonella_enterica,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Serratia marcescens,microbiology_culture,organism_category,serratia_marcescens,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Shigella dysenteriae,,,,,Not in CLIF - only shigella_sonnei exists in schema
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus aureus (methicillin sensitivity not,microbiology_culture,organism_category,staphylococcus_aureus,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],"Staphylococcus aureus, methicillin resistant (MRSA)",microbiology_culture,organism_category,staphylococcus_aureus,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],"Staphylococcus aureus, methicillin sensitive (MSSA)",microbiology_culture,organism_category,staphylococcus_aureus,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],"Staphylococcus, coagulase negative not otherwise",microbiology_culture,organism_category,staphylococcus_coagneg,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus epidermidis,microbiology_culture,organism_category,staphylococcus_epidermidis,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus haemolyticus,microbiology_culture,organism_category,staphylococcus_haemolyticus,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus hominis,microbiology_culture,organism_category,staphylococcus_hominis,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Staphylococcus lugdunensis,microbiology_culture,organism_category,staphylococcus_lugdunensis,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Stenotrophomonas maltophilia,microbiology_culture,organism_category,stenotrophomonas_maltophilia,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus mitis,microbiology_culture,organism_category,streptococcus_mitis,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus mutans,microbiology_culture,organism_category,streptococcus_mutans,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus pneumoniae,microbiology_culture,organism_category,streptococcus_pneumoniae,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus pyogenes,microbiology_culture,organism_category,streptococcus_pyogenes,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus sanguinis,microbiology_culture,organism_category,streptococcus_sanguinis,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptococcus viridans group not otherwise specified,microbiology_culture,organism_category,streptococcus_viridans,pleural_cavity_fluid; peritoneum; joints;meninges_csf ; skin_rash_pustules_abscesses,which fluid category should we use here?
+Positive Clinical Pathogen Testing Results [Through Day 14],Check all the antimicrobials to which the pathogen tested resistant or intermediate (check all that apply):,,,,susceptibility_category,
+Positive Clinical Pathogen Testing Results [Through Day 14],Amikacin,microbiology_susceptibility,antimicrobial_category,amikacin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Amoxicillin-Clavulanate,microbiology_susceptibility,antimicrobial_category,amoxicillin_clavulanate,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Ampicillin-Sulbactam,microbiology_susceptibility,antimicrobial_category,ampicillin_sulbactam,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Aztreonam,microbiology_susceptibility,antimicrobial_category,aztreonam,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Cefazolin,microbiology_susceptibility,antimicrobial_category,cefazolin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Cefdinir,microbiology_susceptibility,antimicrobial_category,cefdinir,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Cefepime,microbiology_susceptibility,antimicrobial_category,cefepime,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Cefotaxime,microbiology_susceptibility,antimicrobial_category,cefotaxime,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Ceftazidime,microbiology_susceptibility,antimicrobial_category,ceftazidime,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Ceftriaxone,microbiology_susceptibility,antimicrobial_category,ceftriaxone,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Ciprofloxacin,microbiology_susceptibility,antimicrobial_category,ciprofloxacin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Clindamycin,microbiology_susceptibility,antimicrobial_category,clindamycin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Doxycycline,microbiology_susceptibility,antimicrobial_category,doxycycline,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Ertapenem,microbiology_susceptibility,antimicrobial_category,ertapenem,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Erythromycin,microbiology_susceptibility,antimicrobial_category,erythromycin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Gentamicin,microbiology_susceptibility,antimicrobial_category,gentamicin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Levofloxacin,microbiology_susceptibility,antimicrobial_category,levofloxacin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Meropenem,microbiology_susceptibility,antimicrobial_category,meropenem,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Methicillin,microbiology_susceptibility,antimicrobial_category,methicillin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Minocycline,microbiology_susceptibility,antimicrobial_category,minocycline,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Nitrofurantoin,microbiology_susceptibility,antimicrobial_category,nitrofurantoin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Oxacillin,microbiology_susceptibility,antimicrobial_category,oxacillin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Penicillin,microbiology_susceptibility,antimicrobial_category,penicillin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Piperacillin-Tazobactam,microbiology_susceptibility,antimicrobial_category,piperacillin_tazobactam,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Rifampin,microbiology_susceptibility,antimicrobial_category,rifampin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Streptomycin,microbiology_susceptibility,antimicrobial_category,streptomycin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Tetracycline,microbiology_susceptibility,antimicrobial_category,tetracycline,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Tobramycin,microbiology_susceptibility,antimicrobial_category,tobramycin,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Trimethoprim-Sulfamethoxazole,microbiology_susceptibility,antimicrobial_category,trimethoprim_sulfamethoxazole,non_susceptible; intermediate,
+Positive Clinical Pathogen Testing Results [Through Day 14],Vancomycin,microbiology_susceptibility,antimicrobial_category,vancomycin,non_susceptible; intermediate,
+Negative Clinical Pathogen Testing Results [Through Day 14],Negative Blood Culture,microbiology_culture,organism_category,no_growth,fluid_category = blood_buffy,
+Negative Clinical Pathogen Testing Results [Through Day 14],Date of first negative blood culture,microbiology_culture,collect_dttm,,fluid_category = blood_buffy AND organism_category = no_growth,
+Negative Clinical Pathogen Testing Results [Through Day 14],Negative Urine Culture,microbiology_culture,organism_category,no_growth,fluid_category = kidneys_renal_pelvis_ureters_bladder,
+Negative Clinical Pathogen Testing Results [Through Day 14],Date of first negative urine culture,microbiology_culture,collect_dttm,,fluid_category = kidneys_renal_pelvis_ureters_bladder AND organism_category = no_growth,
+Negative Clinical Pathogen Testing Results [Through Day 14],Negative Respiratory Culture,microbiology_culture,organism_category,no_growth,fluid_category = respiratory_tract_lower OR respiratory_tract,
+Negative Clinical Pathogen Testing Results [Through Day 14],Date of first negative respiratory culture,microbiology_culture,collect_dttm,,fluid_category IN (respiratory_tract_lower respiratory_tract) AND organism_category = no_growth,
+Negative Clinical Pathogen Testing Results [Through Day 14],Source of first negative respiratory culture - Tracheal aspirate,,,,,Not in CLIF 
+Negative Clinical Pathogen Testing Results [Through Day 14],Source of first negative respiratory culture - NBBAL,,,,,Not in CLIF 
+Negative Clinical Pathogen Testing Results [Through Day 14],Source of first negative respiratory culture - BAL,,,,,Not in CLIF 
+Negative Clinical Pathogen Testing Results [Through Day 14],Source of first negative respiratory culture - Sputum,,,,,Not in CLIF 
+Negative Clinical Pathogen Testing Results [Through Day 14],Source of first negative respiratory culture - Other,,,,,Not in CLIF 
+Negative Clinical Pathogen Testing Results [Through Day 14],Negative SARS-CoV2 Test,microbiology_nonculture,organism_category,sars_cov2,result_category = not_detected,
+Negative Clinical Pathogen Testing Results [Through Day 14],Date of first negative SARS-CoV2 test,microbiology_nonculture,collect_dttm,,organism_category = sars_cov2 AND result_category = not_detected,
+Negative Clinical Pathogen Testing Results [Through Day 14],Negative Influenza Test,,,,,Not in CLIF 
+Negative Clinical Pathogen Testing Results [Through Day 14],Date of first negative influenza test,,,,,Not in CLIF 
+Negative Clinical Pathogen Testing Results [Through Day 14],Negative RSV Test,microbiology_nonculture,organism_category,respiratory_syncytial_virus,result_category = not_detected,
+Negative Clinical Pathogen Testing Results [Through Day 14],Date of first negative RSV test,microbiology_nonculture,collect_dttm,,organism_category = respiratory_syncytial_virus AND result_category = not_detected,
+Medications Prior to Hospital Arrival [Day 0],Systemic Antibiotics (anti-bacterials) ... Specific systemic antibiotics patient was taking prior to hospital arrival (select all that apply) ,,,,med_group,
+Medications Prior to Hospital Arrival [Day 0],Amikacin,medication_admin_intermittent,med_category,amikacin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Amoxicillin,medication_admin_intermittent,med_category,amoxicillin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Amoxicillin-clavulanate (Augmentin),medication_admin_intermittent,med_category,amoxicillin_clavulanate,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Ampicillin,medication_admin_intermittent,med_category,ampicillin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Ampicillin-sulbactam (Unasyn),medication_admin_intermittent,med_category,ampicillin_sulbactam,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Azithromycin,medication_admin_intermittent,med_category,azithromycin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Cefaclor,medication_admin_intermittent,med_category,cefaclor,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Cefazolin,medication_admin_intermittent,med_category,cefazolin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Cefepime,medication_admin_intermittent,med_category,cefepime,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Cefotaxime,medication_admin_intermittent,med_category,cefotaxime,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Cefoxitin,medication_admin_intermittent,med_category,cefoxitin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Ceftazidime,medication_admin_intermittent,med_category,ceftazidime,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Ceftriaxone,medication_admin_intermittent,med_category,ceftriaxone,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Cefuroxime,medication_admin_intermittent,med_category,cefuroxime,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Cephalexin,medication_admin_intermittent,med_category,cephalexin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Ciprofloxacin,medication_admin_intermittent,med_category,ciprofloxacin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Clarithromycin,medication_admin_intermittent,med_category,clarithromycin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Clindamycin,medication_admin_intermittent,med_category,clindamycin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Daptomycin,medication_admin_intermittent,med_category,daptomycin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Dicloxacillin,medication_admin_intermittent,med_category,dicloxacillin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Doripenem,medication_admin_intermittent,med_category,doripenem,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Doxycycline,medication_admin_intermittent,med_category,doxycycline,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Ertapenem,medication_admin_intermittent,med_category,ertapenem,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Erythromycin,medication_admin_intermittent,med_category,erythromycin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Gentamicin,medication_admin_intermittent,med_category,gentamicin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Imipenem,medication_admin_intermittent,med_category,imipenem,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Levofloxacin,medication_admin_intermittent,med_category,levofloxacin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Linezolid,medication_admin_intermittent,med_category,linezolid,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Meropenem,medication_admin_intermittent,med_category,meropenem,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Metronidazole (Flagyl),medication_admin_intermittent,med_category,metronidazole,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Moxifloxacin,medication_admin_intermittent,med_category,moxifloxacin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Nafcillin,medication_admin_intermittent,med_category,nafcillin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Nitrofurantoin (Macrobid),medication_admin_intermittent,med_category,nitrofurantoin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Ofloxacin,medication_admin_intermittent,med_category,ofloxacin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Oxacillin,medication_admin_intermittent,med_category,oxacillin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Penicillin,medication_admin_intermittent,med_category,penicillin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Piperacillin-tazobactam (Zosyn),medication_admin_intermittent,med_category,piperacillin_tazobactam,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Streptomycin,medication_admin_intermittent,med_category,streptomycin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Sulfamethoxazole with trimethoprim (Bactrim),medication_admin_intermittent,med_category,trimethoprim_sulfamethoxazole,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Tobramycin,medication_admin_intermittent,med_category,tobramycin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Vancomycin,medication_admin_intermittent,med_category,vancomycin,CMS_sepsis_qualifying_antibiotics,
+Medications Prior to Hospital Arrival [Day 0],Systemic Anti-virals. Specific systemic antiviral agent(s) patient was taking prior to hospital arrival (select all that apply),,,,med_group,
+Medications Prior to Hospital Arrival [Day 0],Acyclovir,medication_admin_intermittent,med_category,acyclovir,other,
+Medications Prior to Hospital Arrival [Day 0],Baloxavir,,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Ganciclovir,medication_admin_intermittent,med_category,ganciclovir,other,
+Medications Prior to Hospital Arrival [Day 0],Hepatitis C virus medication,,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],HIV medications,,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Molnupiravir (Lageviro),,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Nirmatrelvir-ritonavir (Paxlovid),,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Oseltamivir (Tamiflu),medication_admin_intermittent,med_category,oseltamivir,other,
+Medications Prior to Hospital Arrival [Day 0],Passive immunity therapy against influenza,,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Passive immunity therapy against RSV,,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Passive immunity therapy against SARS-CoV-2,,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Peramivir,medication_admin_intermittent,med_category,peramivir,other,
+Medications Prior to Hospital Arrival [Day 0],Remdesivir (IV only),,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Valacyclovir (Valtrex),medication_admin_intermittent,med_category,valacyclovir,other,
+Medications Prior to Hospital Arrival [Day 0],Zanamivir,,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Systemic Anti-fungals. Specific systemic antifungal agent(s) patient was taking prior to hospital arrival (select all that apply),,,,,
+Medications Prior to Hospital Arrival [Day 0],amphotericin,medication_admin_intermittent,med_category,amphotericin_b,other,
+Medications Prior to Hospital Arrival [Day 0],anidulafungin,medication_admin_intermittent,med_category,anidulafungin,other,
+Medications Prior to Hospital Arrival [Day 0],caspofungin,medication_admin_intermittent,med_category,caspofungin,other,
+Medications Prior to Hospital Arrival [Day 0],clotrimazole,,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],econazole,,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],fluconazole,medication_admin_intermittent,med_category,fluconazole,other,
+Medications Prior to Hospital Arrival [Day 0],Itraconazole,medication_admin_intermittent,med_category,itraconazole,other,
+Medications Prior to Hospital Arrival [Day 0],ketoconazole,,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],micafungin,medication_admin_intermittent,med_category,micafungin,other,
+Medications Prior to Hospital Arrival [Day 0],miconazole,,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],nystatin,medication_admin_intermittent,med_category,nystatin,other,
+Medications Prior to Hospital Arrival [Day 0],terbinafine,,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],voriconazole,medication_admin_intermittent,med_category,voriconazole,other,
+Medications Prior to Hospital Arrival [Day 0],Anticoagulation. Specific anticoagulation agent(s) patient was taking prior to hospital arrival (select all that apply) ,,,,,
+Medications Prior to Hospital Arrival [Day 0],Apixaban (Eliquis),,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Betrixaban (Bevyxxa),,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Dabigatran (Pradaxa),,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Edoxaban (Savaysa),,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Enoxaparin (Lovenox),,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Heparin unfractionated,medication_admin_intermittent,med_category,heparin,anticoagulation,
+Medications Prior to Hospital Arrival [Day 0],Rivaroxaban (Xarelto),,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],Warfarin (Coumadin),,,,,Not in CLIF 
+Medications Prior to Hospital Arrival [Day 0],"Immunosuppressant Therapy Other than Corticosteroids
+(with dose received in the 90 days prior to hospital
+arrival).. Specific immunosuppressant agent(s) patient was taking prior to hospital arrival [dose within 90 days of hospital arrival] (select all that apply) ",,,,med_group,
+Medications Prior to Hospital Arrival [Day 0],abatacept (Orencia),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],adalimumab (Humira and biosimilars),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],alefacept (Amevive),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],amifostine (Ethyol),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],anakinra (Kineret),medication_admin_intermittent,med_category,anakinra,other,
+Medications Prior to Hospital Arrival [Day 0],arsenic trioxide (Trisenox),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],asparaginase (Rylaze),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],auranofin (Ridaura),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],aurothioglucose (Solganal),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],axicabtagene ciloleucel (Yescarta),medication_admin_intermittent,med_category,axicabtagene_ciloleucel,car_t,
+Medications Prior to Hospital Arrival [Day 0],azacitidine (Vidaza Onureg),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],azathioprine (Imuran Azasan),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],basiliximab (Simulect),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],belatacept (Nulojix),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],belimumab (Benlysta),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],bendamustine hydrochloride (Treanda),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],bevacizumab (Avastin and biosimilars),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],bexarotene (Targretin),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],bortezomib (Velcade),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],brentuximab vedotin (Adcetris),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],brexucabtagene autoleucel (Tecartus),medication_admin_intermittent,med_category,brexucabtagene_autoleucel,car_t,
+Medications Prior to Hospital Arrival [Day 0],busulfan (Myleran Busulfex),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],cabazitaxel (Jevtana),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],capecitabine (Xeloda),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],carboplatin (Paraplatin),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],carfilzomib (Kyprolis),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],carmustine (Gliadel Bicnu),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],certolizumab pegol (Cimzia),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],cisplatin (Platinol),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],cladribine (Mavenclad Leustatin),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],clofarabine (Clolar),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],cyclophosphamide (Neosar Cytoxan),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],cyclosporine (Sandimmune Neoral etc),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],dacarbazine (DTIC-Dome),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],daclizumab (Zenapax),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],dactinomycin (Cosmegen),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],dasatinib (Sprycel),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],daunorubicin citrate liposome (Daunoxome),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],decitabine (Inqovi Dacogen),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],denileukin diftitox (Ontak),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],denosumab (Prolia Xgeva),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],docetaxel (Taxotere),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],doxorubicin (Adriamycin Doxil),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],eculizumab (Soliris),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],efalizumab (Raptiva),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],etanercept (Enbrel and biosimilars),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],etoposide (VePesid),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],everolimus (Zortress Afinitor),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],floxuridine (FUDR),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],gefitinib (Iressa),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],gold sodium thiomalate,,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],golimumab (Simponi),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],hydroxychloroquine (Plaquenil),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],idecabtagene vicleucel (Abecma),medication_admin_intermittent,med_category,idecabtagene_vicleucel,car_t,
+Medications Prior to Hospital Arrival [Day 0],ifosfamide (Ifex),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],imatinib (Gleevec),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],infliximab (Remicade and biosimilars),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],interferon alfacon-1 (Infergen),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],ipilimumab (Yervoy),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],ixabepilone (Ixempra),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],ixazomib (Ninlaro),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],leflunomide (Arava),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],lenalidomide (Revlimid),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],lisocabtagene maraleucel (Breyanzi),medication_admin_intermittent,med_category,lisocabtagene_maraleucel,car_t,
+Medications Prior to Hospital Arrival [Day 0],lomustine (Gleostine),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],melphalan (Alkeran),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],mercaptopurine (Purixan),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],mesna (Mesnex),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],methotrexate (Trexall etc),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],mitomycin (Mutamycin),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],mitotane (Lysodren),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],mycophenolate mofetil (CellCept),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],mycophenolate sodium (Myfortic),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],natalizumab (Tysabri),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],nelarabine (Arranon),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],ofatumumab (Arzerra Kesimpta),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],osimertinib (Tagrisso),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],oxaliplatin (Eloxatin),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],paclitaxel (Abraxane Taxol),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],palifermin (Kepivance),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],panitumumab (Vectibix),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],pegademase bovine (Adagen),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],pegaspargase (Oncaspar),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],pemetrexed (Alimta),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],pentostatin (Nipent),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],pertuzumab (Perjeta),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],pimecrolimus (Elidel),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],plicamycin (Mithracin),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],pralatrexate (Folotyn),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],rituximab (Rituxan and biosimilars),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],romidepsin (Istodax),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],sirolimus (Rapamune),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],streptozocin (Zanosar),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],sulfasalazine (Azulfidine),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],tacrolimus (Prograf etc),medication_admin_continuous,med_category,tacrolimus,others,
+Medications Prior to Hospital Arrival [Day 0],temozolomide (Temodar),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],teniposide (Vumon),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],thalidomide (Thalomid),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],thioguanine (Tabloid),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],thiotepa (Tepadina),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],tisagenlecleucel (Kymriah),medication_admin_intermittent,med_category,tisagenlecleucel,car_t,
+Medications Prior to Hospital Arrival [Day 0],tocilizumab (Actemra etc),medication_admin_intermittent,med_category,tocilizumab,other,
+Medications Prior to Hospital Arrival [Day 0],trastuzumab (Herceptin and biosimilars),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],tretinoin (Vesanoid Retin-A),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],ustekinumab (Stelara),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],vinblastine (Velban),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],vorinostat (Zolinza),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],Systemic Corticosteroids - dexamethasone,medication_admin_intermittent,med_category,dexamethasone,steroid,
+Medications Prior to Hospital Arrival [Day 0],Systemic Corticosteroids - hydrocortisone,medication_admin_intermittent,med_category,hydrocortisone,steroid,
+Medications Prior to Hospital Arrival [Day 0],Systemic Corticosteroids - methylprednisolone,medication_admin_intermittent,med_category,methylprednisolone,steroid,
+Medications Prior to Hospital Arrival [Day 0],Systemic Corticosteroids - prednisolone,medication_admin_intermittent,med_category,prednisolone,steroid,
+Medications Prior to Hospital Arrival [Day 0],Systemic Corticosteroids - prednisone,medication_admin_intermittent,med_category,prednisone,steroid,
+Medications Prior to Hospital Arrival [Day 0],Systemic Corticosteroids - betamethasone,medication_admin_intermittent,med_category,betamethasone,steroid,
+Medications Prior to Hospital Arrival [Day 0],Systemic Corticosteroids - fludrocortisone,medication_admin_intermittent,med_category,fludrocortisone,steroid,
+Medications Prior to Hospital Arrival [Day 0],Anti-Psychotic Agents - haloperidol,medication_admin_intermittent,med_category,haloperidol,antipsychotic,
+Medications Prior to Hospital Arrival [Day 0],Anti-Psychotic Agents - olanzapine,medication_admin_intermittent,med_category,olanzapine,antipsychotic,
+Medications Prior to Hospital Arrival [Day 0],Anti-Psychotic Agents - quetiapine,medication_admin_intermittent,med_category,quetiapine,antipsychotic,
+Medications Prior to Hospital Arrival [Day 0],Anti-Psychotic Agents - risperidone,medication_admin_intermittent,med_category,risperidone,antipsychotic,
+Medications Prior to Hospital Arrival [Day 0],Anti-Psychotic Agents - aripiprazole,,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],Anti-Depressant Agents,,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],Opioids - morphine (continuous),medication_admin_continuous,med_category,morphine,sedation,
+Medications Prior to Hospital Arrival [Day 0],Opioids - morphine (intermittent),medication_admin_intermittent,med_category,morphine,analgesia,
+Medications Prior to Hospital Arrival [Day 0],Opioids - fentanyl (continuous),medication_admin_continuous,med_category,fentanyl,sedation,
+Medications Prior to Hospital Arrival [Day 0],Opioids - fentanyl (intermittent),medication_admin_intermittent,med_category,fentanyl,analgesia,
+Medications Prior to Hospital Arrival [Day 0],Opioids - hydromorphone/Dilaudid (continuous),medication_admin_continuous,med_category,hydromorphone,sedation,
+Medications Prior to Hospital Arrival [Day 0],Opioids - hydromorphone/Dilaudid (intermittent),medication_admin_intermittent,med_category,hydromorphone,analgesia,
+Medications Prior to Hospital Arrival [Day 0],Opioids - oxycodone,medication_admin_intermittent,med_category,oxycodone,analgesia,
+Medications Prior to Hospital Arrival [Day 0],Opioids - codeine,,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],Opioids - remifentanil,medication_admin_continuous,med_category,remifentanil,sedation,
+Medications Prior to Hospital Arrival [Day 0],Benzodiazepines - lorazepam (continuous),medication_admin_continuous,med_category,lorazepam,sedation,
+Medications Prior to Hospital Arrival [Day 0],Benzodiazepines - lorazepam (intermittent),medication_admin_intermittent,med_category,lorazepam,anxiolytic,
+Medications Prior to Hospital Arrival [Day 0],Benzodiazepines - midazolam (continuous),medication_admin_continuous,med_category,midazolam,sedation,
+Medications Prior to Hospital Arrival [Day 0],Benzodiazepines - midazolam (intermittent),medication_admin_intermittent,med_category,midazolam,sedation,
+Medications Prior to Hospital Arrival [Day 0],Benzodiazepines - diazepam,medication_admin_intermittent,med_category,diazepam,anxiolytic,
+Medications Prior to Hospital Arrival [Day 0],Benzodiazepines - valium,medication_admin_intermittent,med_category,diazepam,anxiolytic,Valium = diazepam
+Medications Prior to Hospital Arrival [Day 0],Insulin,medication_admin_continuous,med_category,insulin,endocrine,
+Medications Prior to Hospital Arrival [Day 0],Oral Hypoglycemics (metformin etc),,,,,Not in CLIF
+Medications Prior to Hospital Arrival [Day 0],GLP-1 Receptor Agonists (semaglutide etc),,,,,Not in CLIF

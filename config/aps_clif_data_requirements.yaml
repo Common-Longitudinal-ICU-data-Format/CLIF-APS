@@ -1,0 +1,835 @@
+# =============================================================================
+# APS-CLIF Data Requirements
+# =============================================================================
+# This file defines all required CLIF tables, columns, and category values
+# needed to support the APS (Acute Physiology Score) data collection.
+#
+# Based on APS-CLIF Crosswalk analysis.
+# =============================================================================
+
+# =============================================================================
+# PATIENT TABLE (Full table required)
+# =============================================================================
+patient_required_columns:
+  - patient_id
+  - birth_date
+  - death_dttm
+  - race_category
+  - ethnicity_category
+  - sex_category
+  - language_category
+
+# =============================================================================
+# HOSPITALIZATION TABLE (Full table required)
+# =============================================================================
+hospitalization_required_columns:
+  - patient_id
+  - hospitalization_id
+  - admission_dttm
+  - discharge_dttm
+  - age_at_admission
+  - admission_type_category
+  - discharge_category
+
+# =============================================================================
+# ADT TABLE (Full table required)
+# =============================================================================
+adt_required_columns:
+  - hospitalization_id
+  - hospital_id
+  - hospital_type
+  - in_dttm
+  - out_dttm
+  - location_name
+  - location_category
+  - location_type
+
+adt_location_categories_of_interest:
+  - ed
+  - ward
+  - stepdown
+  - icu
+  - procedural
+  - other
+
+# =============================================================================
+# VITALS TABLE
+# =============================================================================
+vitals_required_columns:
+  - hospitalization_id
+  - recorded_dttm
+  - vital_category
+  - vital_value
+  - meas_site_name
+
+vitals_of_interest:
+  - temp_c
+  - heart_rate
+  - sbp
+  - dbp
+  - map
+  - spo2
+  - respiratory_rate
+  - weight_kg
+  - height_cm
+
+# =============================================================================
+# LABS TABLE
+# =============================================================================
+labs_required_columns:
+  - hospitalization_id
+  - lab_result_dttm
+  - lab_category
+  - lab_value
+  - lab_value_numeric
+
+labs_of_interest:
+  # ABG values
+  - po2_arterial
+  - pco2_arterial
+  - ph_arterial
+  - ph_venous
+  - so2_arterial
+  # Electrolytes
+  - sodium
+  - potassium
+  - chloride
+  - bicarbonate
+  - calcium_total
+  - magnesium
+  # Renal
+  - creatinine
+  - bun
+  # Metabolic
+  - glucose_serum
+  - lactate
+  - albumin
+  # Hematology
+  - wbc
+  - hemoglobin
+  - platelet_count
+  - neutrophils_absolute
+  - lymphocytes_absolute
+  # Liver
+  - bilirubin_total
+  - ast
+  - alt
+  # Coagulation
+  - inr
+  - ptt
+  # Inflammatory markers
+  - crp
+  - procalcitonin
+  - ferritin
+  # Cardiac
+  - troponin_i
+  - troponin_t
+
+# Labs NOT in CLIF (documented gaps)
+labs_not_in_clif:
+  - hematocrit
+  - d_dimer
+  - fibrinogen
+
+# =============================================================================
+# MEDICATION ADMIN CONTINUOUS TABLE
+# =============================================================================
+meds_continuous_required_columns:
+  - hospitalization_id
+  - admin_dttm
+  - med_name
+  - med_category
+  - med_group
+  - med_route_category
+  - med_dose
+  - med_dose_unit
+  - mar_action_category
+
+# Vasoactives/Inotropes
+vasoactives_of_interest:
+  - norepinephrine
+  - epinephrine
+  - phenylephrine
+  - vasopressin
+  - dopamine
+  - angiotensin
+  - dobutamine
+  - milrinone
+  - isoproterenol
+
+# Sedation (continuous)
+sedation_continuous_of_interest:
+  - propofol
+  - midazolam
+  - lorazepam
+  - dexmedetomidine
+  - fentanyl
+  - hydromorphone
+  - morphine
+  - ketamine
+  - pentobarbital
+  - remifentanil
+
+# Paralytics (continuous)
+paralytics_continuous_of_interest:
+  - vecuronium
+  - rocuronium
+  - cisatracurium
+
+# Anticoagulation (continuous)
+anticoagulation_continuous_of_interest:
+  - heparin
+  - argatroban
+  - bivalirudin
+  - cangrelor
+  - eptifibatide
+
+# Other continuous meds
+other_continuous_of_interest:
+  - insulin           # endocrine
+  - nitric_oxide      # pulmonary vasodilators (inhaled)
+  - epoprostenol      # pulmonary vasodilators (IV)
+  - treprostinil      # pulmonary vasodilators (IV)
+  - tacrolimus        # immunosuppressant
+
+# All continuous meds combined
+meds_continuous_of_interest:
+  # Vasoactives/Inotropes
+  - norepinephrine
+  - epinephrine
+  - phenylephrine
+  - vasopressin
+  - dopamine
+  - angiotensin
+  - dobutamine
+  - milrinone
+  - isoproterenol
+  # Sedation
+  - propofol
+  - midazolam
+  - lorazepam
+  - dexmedetomidine
+  - fentanyl
+  - hydromorphone
+  - morphine
+  - ketamine
+  - pentobarbital
+  - remifentanil
+  # Paralytics
+  - vecuronium
+  - rocuronium
+  - cisatracurium
+  # Anticoagulation
+  - heparin
+  - argatroban
+  - bivalirudin
+  - cangrelor
+  - eptifibatide
+  # Other
+  - insulin
+  - nitric_oxide
+  - epoprostenol
+  - treprostinil
+  - tacrolimus
+
+# =============================================================================
+# MEDICATION ADMIN INTERMITTENT TABLE
+# =============================================================================
+meds_intermittent_required_columns:
+  - hospitalization_id
+  - admin_dttm
+  - med_name
+  - med_category
+  - med_group
+  - med_route_category
+  - med_dose
+  - med_dose_unit
+
+# Systemic Antibiotics (CMS sepsis qualifying)
+antibiotics_of_interest:
+  - amikacin
+  - amoxicillin
+  - amoxicillin_clavulanate
+  - ampicillin
+  - ampicillin_sulbactam
+  - azithromycin
+  - aztreonam
+  - cefaclor
+  - cefazolin
+  - cefdinir
+  - cefepime
+  - cefotaxime
+  - cefoxitin
+  - ceftazidime
+  - ceftriaxone
+  - cefuroxime
+  - cephalexin
+  - ciprofloxacin
+  - clarithromycin
+  - clindamycin
+  - colistin
+  - daptomycin
+  - dicloxacillin
+  - doripenem
+  - doxycycline
+  - ertapenem
+  - erythromycin
+  - gentamicin
+  - imipenem
+  - levofloxacin
+  - linezolid
+  - meropenem
+  - metronidazole
+  - moxifloxacin
+  - nafcillin
+  - nitrofurantoin
+  - ofloxacin
+  - oxacillin
+  - penicillin
+  - piperacillin_tazobactam
+  - streptomycin
+  - tobramycin
+  - trimethoprim_sulfamethoxazole
+  - vancomycin
+
+# Systemic Antifungals
+antifungals_of_interest:
+  - amphotericin_b
+  - anidulafungin
+  - caspofungin
+  - fluconazole
+  - itraconazole
+  - micafungin
+  - nystatin
+  - voriconazole
+  - posaconazole
+  - isavuconazole
+
+# Antifungals NOT in CLIF
+antifungals_not_in_clif:
+  - clotrimazole
+  - econazole
+  - ketoconazole
+  - miconazole
+  - terbinafine
+
+# Systemic Antivirals
+antivirals_of_interest:
+  - acyclovir
+  - ganciclovir
+  - oseltamivir
+  - peramivir
+  - valacyclovir
+  - cidofovir
+  - foscarnet
+  - valganciclovir
+  - maribavir
+  - ribavirin
+
+# Antivirals NOT in CLIF
+antivirals_not_in_clif:
+  - baloxavir
+  - molnupiravir
+  - nirmatrelvir_ritonavir  # Paxlovid
+  - remdesivir
+  - zanamivir
+  - hcv_medications
+  - hiv_medications
+  - passive_immunity_influenza
+  - passive_immunity_rsv
+  - passive_immunity_sars_cov2
+
+# Steroids
+steroids_of_interest:
+  - dexamethasone
+  - hydrocortisone
+  - methylprednisolone
+  - prednisolone
+  - prednisone
+  - betamethasone
+  - fludrocortisone
+
+# Sedation/Analgesia (intermittent)
+sedation_intermittent_of_interest:
+  - fentanyl
+  - hydromorphone
+  - morphine
+  - oxycodone
+  - ketamine
+  - propofol
+  - midazolam
+  - lorazepam
+  - diazepam
+
+# Paralytics (intermittent)
+paralytics_intermittent_of_interest:
+  - rocuronium
+  - vecuronium
+  - cisatracurium
+  - atracurium
+  - succinylcholine
+
+# Antipsychotics
+antipsychotics_of_interest:
+  - haloperidol
+  - olanzapine
+  - quetiapine
+  - risperidone
+
+# CAR-T therapies
+car_t_of_interest:
+  - axicabtagene_ciloleucel
+  - brexucabtagene_autoleucel
+  - idecabtagene_vicleucel
+  - lisocabtagene_maraleucel
+  - tisagenlecleucel
+
+# Other immunomodulators in CLIF
+immunomodulators_of_interest:
+  - anakinra
+  - tocilizumab
+
+# All intermittent meds combined
+meds_intermittent_of_interest:
+  # Antibiotics
+  - amikacin
+  - amoxicillin
+  - amoxicillin_clavulanate
+  - ampicillin
+  - ampicillin_sulbactam
+  - azithromycin
+  - aztreonam
+  - cefaclor
+  - cefazolin
+  - cefdinir
+  - cefepime
+  - cefotaxime
+  - cefoxitin
+  - ceftazidime
+  - ceftriaxone
+  - cefuroxime
+  - cephalexin
+  - ciprofloxacin
+  - clarithromycin
+  - clindamycin
+  - colistin
+  - daptomycin
+  - dicloxacillin
+  - doripenem
+  - doxycycline
+  - ertapenem
+  - erythromycin
+  - gentamicin
+  - imipenem
+  - levofloxacin
+  - linezolid
+  - meropenem
+  - metronidazole
+  - moxifloxacin
+  - nafcillin
+  - nitrofurantoin
+  - ofloxacin
+  - oxacillin
+  - penicillin
+  - piperacillin_tazobactam
+  - streptomycin
+  - tobramycin
+  - trimethoprim_sulfamethoxazole
+  - vancomycin
+  # Antifungals
+  - amphotericin_b
+  - anidulafungin
+  - caspofungin
+  - fluconazole
+  - itraconazole
+  - micafungin
+  - nystatin
+  - voriconazole
+  - posaconazole
+  - isavuconazole
+  # Antivirals
+  - acyclovir
+  - ganciclovir
+  - oseltamivir
+  - peramivir
+  - valacyclovir
+  - cidofovir
+  - foscarnet
+  - valganciclovir
+  - maribavir
+  - ribavirin
+  # Steroids
+  - dexamethasone
+  - hydrocortisone
+  - methylprednisolone
+  - prednisolone
+  - prednisone
+  - betamethasone
+  - fludrocortisone
+  # Sedation/Analgesia (intermittent)
+  - fentanyl
+  - hydromorphone
+  - morphine
+  - oxycodone
+  - ketamine
+  - propofol
+  - midazolam
+  - lorazepam
+  - diazepam
+  # Paralytics (intermittent)
+  - rocuronium
+  - vecuronium
+  - cisatracurium
+  - atracurium
+  - succinylcholine
+  # Antipsychotics
+  - haloperidol
+  - olanzapine
+  - quetiapine
+  - risperidone
+  # CAR-T therapies
+  - axicabtagene_ciloleucel
+  - brexucabtagene_autoleucel
+  - idecabtagene_vicleucel
+  - lisocabtagene_maraleucel
+  - tisagenlecleucel
+  # Immunomodulators
+  - anakinra
+  - tocilizumab
+
+# =============================================================================
+# RESPIRATORY SUPPORT TABLE
+# =============================================================================
+respiratory_support_required_columns:
+  - hospitalization_id
+  - recorded_dttm
+  - device_name
+  - device_category
+  - vent_brand_name
+  - mode_name
+  - mode_category
+  - tracheostomy
+  - fio2_set
+  - lpm_set
+  - tidal_volume_set
+  - resp_rate_set
+  - pressure_control_set
+  - pressure_support_set
+  - flow_rate_set
+  - peak_inspiratory_pressure_set
+  - inspiratory_time_set
+  - peep_set
+  - tidal_volume_obs
+  - resp_rate_obs
+  - plateau_pressure_obs
+  - peak_inspiratory_pressure_obs
+  - peep_obs
+  - minute_vent_obs
+  - mean_airway_pressure_obs
+
+device_categories_of_interest:
+  - IMV
+  - NIPPV
+  - CPAP
+  - High Flow NC
+  - Face Mask
+  - Trach Collar
+  - Nasal Cannula
+  - Room Air
+  - Other
+
+mode_categories_of_interest:
+  - Assist Control-Volume Control
+  - Pressure Control
+  - Pressure-Regulated Volume Control
+  - SIMV
+  - Pressure Support/CPAP
+  - Volume Support
+  - Blow by
+  - Other
+
+# =============================================================================
+# ECMO/MCS TABLE
+# =============================================================================
+ecmo_mcs_required_columns:
+  - hospitalization_id
+  - recorded_dttm
+  - device_name
+  - device_category
+  - mcs_group
+  - device_rate
+  - sweep
+  - flow
+  - fdO2
+
+ecmo_device_categories_of_interest:
+  - VA_ECMO
+  - VV_ECMO
+  - VAV_ECMO
+  - LAVA_ECMO
+  - IABP
+  - Impella_2.5
+  - Impella_CP
+  - Impella_5.0
+  - Impella_5.5
+  - Impella_RP
+
+mcs_groups_of_interest:
+  - ECMO
+  - IABP
+  - RVAD
+  - durable_LVAD
+  - temporary_LVAD
+
+# =============================================================================
+# CRRT TABLE
+# =============================================================================
+crrt_required_columns:
+  - hospitalization_id
+  - recorded_dttm
+  - crrt_mode_category
+  - blood_flow_rate
+  - pre_filter_replacement_fluid_rate
+  - post_filter_replacement_fluid_rate
+  - dialysate_flow_rate
+  - ultrafiltration_out
+
+# =============================================================================
+# POSITION TABLE (for prone positioning)
+# =============================================================================
+position_required_columns:
+  - hospitalization_id
+  - recorded_dttm
+  - position_name
+  - position_category
+
+position_categories_of_interest:
+  - prone
+  - not_prone
+
+# =============================================================================
+# PATIENT ASSESSMENT TABLE (for GCS, RASS, CAM)
+# =============================================================================
+patient_assessment_required_columns:
+  - hospitalization_id
+  - recorded_dttm
+  - assessment_category
+  - assessment_value
+
+assessments_of_interest:
+  - gcs_total
+  - gcs_eye
+  - gcs_verbal
+  - gcs_motor
+  - RASS
+  - cam_total
+
+# =============================================================================
+# HOSPITAL DIAGNOSIS TABLE
+# =============================================================================
+hospital_diagnosis_required_columns:
+  - hospitalization_id
+  - diagnosis_code
+  - diagnosis_code_format
+  - diagnosis_primary
+  - poa_present
+
+# =============================================================================
+# MICROBIOLOGY CULTURE TABLE
+# =============================================================================
+microbiology_culture_required_columns:
+  - patient_id
+  - hospitalization_id
+  - organism_id
+  - order_dttm
+  - collect_dttm
+  - result_dttm
+  - fluid_name
+  - fluid_category
+  - method_category
+  - organism_category
+  - organism_group
+
+# Fluid categories for different culture types
+blood_culture_fluid_category: blood_buffy
+urine_culture_fluid_category: kidneys_renal_pelvis_ureters_bladder
+respiratory_culture_fluid_categories:
+  - respiratory_tract
+  - respiratory_tract_lower
+  - nasopharynx_upperairway
+stool_culture_fluid_category: feces_stool
+other_culture_fluid_categories:
+  - pleural_cavity_fluid
+  - peritoneum
+  - joints
+  - meninges_csf
+  - skin_rash_pustules_abscesses
+
+# Organisms of interest (common pathogens)
+organisms_of_interest:
+  - acinetobacter_baumannii
+  - aspergillus_flavus
+  - aspergillus_fumigatus
+  - candida_albicans
+  - candida_glabrata
+  - citrobacter_freundii
+  - citrobacter_koseri
+  - clostridium_difficile
+  - clostridioides_difficile
+  - cryptococcus_neoformans
+  - enterobacter_cloacae
+  - enterococcus_faecalis
+  - enterococcus_faecium
+  - escherichia_coli
+  - haemophilus_influenzae
+  - klebsiella_aerogenes
+  - klebsiella_oxytoca
+  - klebsiella_pneumoniae
+  - neisseria_meningitidis
+  - proteus_mirabilis
+  - proteus_vulgaris
+  - pseudomonas_aeruginosa
+  - salmonella_enterica
+  - serratia_marcescens
+  - staphylococcus_aureus
+  - staphylococcus_coagneg
+  - staphylococcus_epidermidis
+  - staphylococcus_haemolyticus
+  - staphylococcus_hominis
+  - staphylococcus_lugdunensis
+  - stenotrophomonas_maltophilia
+  - streptococcus_mitis
+  - streptococcus_mutans
+  - streptococcus_pneumoniae
+  - streptococcus_pyogenes
+  - streptococcus_sanguinis
+  - streptococcus_viridans
+  - no_growth  # For negative cultures
+
+# Organisms NOT in CLIF
+organisms_not_in_clif:
+  - shigella_dysenteriae
+
+# =============================================================================
+# MICROBIOLOGY NONCULTURE TABLE (PCR/Molecular)
+# =============================================================================
+microbiology_nonculture_required_columns:
+  - patient_id
+  - hospitalization_id
+  - result_dttm
+  - collect_dttm
+  - order_dttm
+  - fluid_category
+  - method_category
+  - organism_category
+  - organism_group
+  - result_category
+
+nonculture_organisms_of_interest:
+  - clostridium_difficile
+  - sars_cov2
+  - respiratory_syncytial_virus
+
+nonculture_result_categories:
+  - detected
+  - not_detected
+  - indeterminant
+
+# Molecular tests NOT in CLIF (significant gap)
+molecular_tests_not_in_clif:
+  - adenovirus
+  - coronavirus_229e
+  - coronavirus_hku1
+  - coronavirus_nl63
+  - coronavirus_oc43
+  - human_metapneumovirus
+  - rhinovirus_enterovirus
+  - influenza_a
+  - influenza_b
+  - parainfluenza_1
+  - parainfluenza_2
+  - parainfluenza_3
+  - parainfluenza_4
+  - bordetella_pertussis
+  - bordetella_parapertussis
+  - chlamydia_pneumoniae
+  - mycoplasma_pneumoniae
+
+# =============================================================================
+# MICROBIOLOGY SUSCEPTIBILITY TABLE
+# =============================================================================
+microbiology_susceptibility_required_columns:
+  - organism_id
+  - antimicrobial_name
+  - antimicrobial_category
+  - sensitivity_name
+  - susceptibility_name
+  - susceptibility_category
+
+antimicrobials_of_interest:
+  - amikacin
+  - amoxicillin_clavulanate
+  - ampicillin_sulbactam
+  - aztreonam
+  - cefazolin
+  - cefdinir
+  - cefepime
+  - cefotaxime
+  - ceftazidime
+  - ceftriaxone
+  - ciprofloxacin
+  - clindamycin
+  - doxycycline
+  - ertapenem
+  - erythromycin
+  - gentamicin
+  - levofloxacin
+  - meropenem
+  - methicillin
+  - minocycline
+  - nitrofurantoin
+  - oxacillin
+  - penicillin
+  - piperacillin_tazobactam
+  - rifampin
+  - streptomycin
+  - tetracycline
+  - tobramycin
+  - trimethoprim_sulfamethoxazole
+  - vancomycin
+
+susceptibility_categories:
+  - susceptible
+  - non_susceptible
+  - intermediate
+  - NA
+
+# =============================================================================
+# DOCUMENTED GAPS - Elements NOT available in CLIF
+# =============================================================================
+elements_not_in_clif:
+  medications:
+    statins: No statin medications in schema
+    oral_anticoagulants: apixaban, rivaroxaban, dabigatran, edoxaban, warfarin
+    oral_hypoglycemics: metformin, glipizide, etc.
+    glp1_agonists: semaglutide, dulaglutide, liraglutide
+    antidepressants: No antidepressant medications in schema
+    enoxaparin: Subcutaneous LMWH not in schema
+    oral_antiplatelets: aspirin, clopidogrel, prasugrel, ticagrelor
+    most_immunosuppressants: Most biologics, chemotherapy agents not in schema
+  labs:
+    hematocrit: Not in CLIF
+    d_dimer: Not in CLIF
+    fibrinogen: Not in CLIF
+  microbiology:
+    respiratory_viral_panel: Only SARS-CoV-2 and RSV available
+    stool_viral_pathogens: Rotavirus, norovirus, etc. not in schema
+    parasites: Giardia, cryptosporidium, etc. not in schema
+    shigella_dysenteriae: Only shigella_sonnei in schema
+  other:
+    nutrition: Nutrition administration not in CLIF
+    fluid_balance: Intake/output not in CLIF
+    procedures: Surgical procedures not in provided schemas
+    blood_products: PRBCs, platelets, FFP, cryo not in schema
+    nbbal_volumes: Procedure-specific volumes not in CLIF
+
