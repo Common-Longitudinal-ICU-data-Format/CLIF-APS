@@ -46,6 +46,8 @@ CENSORED = re.compile(r"^\s*[<>]=?\s*(-?\d+(?:\.\d+)?)\s*$")
 
 # ----------------------------------------------------------------------------------------------- setup
 def load_config(path):
+    if not Path(path).exists():
+        raise SystemExit(f"{path} not found: cp config/real.example.json config/real.json and set data_directory (see README step 3)")
     cfg = json.loads(Path(path).read_text())
     for key in ("data_directory", "output_directory"):
         p = Path(cfg[key])
@@ -155,7 +157,7 @@ def load_without_outliers(clif, table, value_col, **kwargs):
     from clifpy.utils.outlier_handler import apply_outlier_handling
     obj = clif.load_table(table, **kwargs)
     before = obj.df[value_col].notna()
-    with contextlib.redirect_stdout(io.StringIO()):
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):  # clifpy progress bars
         apply_outlier_handling(obj)
     return obj.df, int((before & obj.df[value_col].isna()).sum())
 

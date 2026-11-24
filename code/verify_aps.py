@@ -84,6 +84,8 @@ def main():
     from clifpy.clif_orchestrator import ClifOrchestrator
     from clifpy.utils.outlier_handler import apply_outlier_handling
 
+    if not Path(args.config).exists():
+        raise SystemExit(f"{args.config} not found: cp config/real.example.json config/real.json and set data_directory (see README step 3)")
     cfg = json.loads(Path(args.config).read_text())
     data_dir = Path(cfg["data_directory"]) if Path(cfg["data_directory"]).is_absolute() else ROOT / cfg["data_directory"]
     out_dir = Path(cfg["output_directory"]) if Path(cfg["output_directory"]).is_absolute() else ROOT / cfg["output_directory"]
@@ -141,7 +143,7 @@ def main():
 
     def raw(table, value_col, columns):
         obj = clif.load_table(table, columns=columns, filters={"hospitalization_id": hosp_ids})
-        with contextlib.redirect_stdout(io.StringIO()):
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):  # clifpy progress bars
             apply_outlier_handling(obj)
         return obj.df
 
