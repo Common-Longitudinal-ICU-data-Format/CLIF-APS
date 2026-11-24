@@ -1,0 +1,50 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./data/phi/**)",
+      "Edit(./data/phi/**)",
+      "Read(./output/logs/**)",
+      "Read(./output/real/**)",
+      "Edit(./output/real/**)"
+    ],
+    "disableBypassPermissionsMode": "disable"
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/no-pasted-rows.py",
+            "onFailure": "block"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Read|Grep|Glob|Edit|Write|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/no-row-dumps.py",
+            "onFailure": "block"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/phi-scan.py"
+          }
+        ]
+      }
+    ]
+  },
+  "autoMemoryEnabled": false,
+  "cleanupPeriodDays": 7
+}

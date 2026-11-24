@@ -14,3 +14,14 @@ output/
 output/intermediate
 output/final
 tests/
+# sensitive-data kit (clif-sensitive-data-demo)
+data/phi/*
+!data/phi/README.md
+config/real.json
+.claude/settings.local.json
+.claude/settings.local_share.json
+.clif-phi-paths
+
+# APS REDCap codebook is not published: download it locally (see README) and build the spec
+config/redcap/daily_assessment_codebook*.csv
+config/redcap/daily_fields.csv

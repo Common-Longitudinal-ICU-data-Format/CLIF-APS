@@ -1,0 +1,8 @@
+{
+    "site_name": "MIMIC_demo",
+    "data_directory": "data/demo",
+    "filetype": "parquet",
+    "timezone": "US/Eastern",
+    "output_directory": "output/demo",
+    "label": "demo"
+}

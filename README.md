@@ -27,7 +27,9 @@ Patients enrolled in APS clinical trials. Use the CLIF clinical trials table, de
 | withdrawal_dttm    | datetime | Timestamp of trial withdrawal if applicable.                                                              |
 
 ## Required CLIF tables and fields
-The following tables are required (based on [APS-CLIF crosswalk](data/APS_CLIF_crosswalk.csv)):
+The current pipeline (`code/run_aps.py`, daily assessment labs and 8am vitals) reads **clinical_trials**,
+**hospitalization**, **vitals** (`sbp`, `dbp`, `spo2`) and **labs**. The full APS form needs the tables below
+(based on [APS-CLIF crosswalk](data/APS_CLIF_crosswalk.csv)):
 
 1. **patient**: `patient_id`, `sex_category`, `race_category`, `ethnicity_category`, `language_category`, `death_dttm`
 
@@ -69,53 +71,134 @@ The following tables are required (based on [APS-CLIF crosswalk](data/APS_CLIF_c
 
 ## Detailed Instructions for running the project
 
+**Working principle: code goes to the data, data never goes to the model.** The pipeline is developed and
+tested on the open CLIF-MIMIC demo in `data/demo`. Each site runs it on its own data in its own terminal.
+The REDCap upload CSV is row-level patient data and stays on site; only aggregate summaries (counts 1-10 shown
+as `<11`) are shared or shown to an AI assistant. The guardrails follow
+[clif-sensitive-data-demo](https://github.com/kaveriC/clif-sensitive-data-demo) (see "Using Claude Code" below).
+
 ### Prerequisites
 
-- [uv](https://docs.astral.sh/uv/) - Fast Python package manager (recommended)
+- [uv](https://docs.astral.sh/uv/) - Python package manager
 
-To install uv:
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### 1. Update `config/config.json`
-Follow instructions in the [config/README.md](config/README.md) file for detailed configuration steps.
+### 1. Set up the environment
 
-### 2. Set up the project environment
-
-Using **uv** (recommended):
 ```bash
-# Clone the repository and navigate to the project directory
 cd CLIF-APS
-
-# Install dependencies and create virtual environment
 uv sync
-
-# Register the Jupyter kernel (optional, for IDE/notebook use)
-uv run python -m ipykernel install --user --name clif-aps --display-name "CLIF-APS (Python 3.11)"
 ```
 
+### 2. Add the APS REDCap codebook (not in this repo)
 
-### 3. Run the data pipeline
-
-Run the `code/00_setup.ipynb` notebook.
-
-This will create the following files in `output/intermediate/`:
-- `static_df.parquet` - Patient demographics and hospitalization info
-- `wide_df.parquet` - Time-series data (vitals, labs, meds, respiratory, ADT)
-- `micro_culture_df.parquet` - Microbiology culture data
-- `micro_nonculture_df.parquet` - Microbiology non-culture data (PCR/molecular)
-
-### 4. Launch the Dashboard
-
-After running the setup notebook, launch the Streamlit dashboard to visualize patient data:
+The APS codebook is not published here. Get the `APS_to_CLIF` sheet from the APS data team, export the
+`daily_assessment_codebook` tab (the day -2 instrument) as CSV to
+`config/redcap/daily_assessment_codebook_day_m2.csv`, then build the field spec:
 
 ```bash
-uv run streamlit run app/app.py
+uv run python code/build_redcap_spec.py
 ```
 
-The dashboard will open in your browser at `http://localhost:8501` and includes:
-- **Patient selector** - Dropdown to choose a patient ID
-- **Static information** - Demographics, hospitalization details, trial info
-- **Time-series data** - Preview of vitals, labs, medications, respiratory support, and ADT locations
+This writes `config/redcap/daily_fields.csv` (one row per field, `{d}` where the day suffix goes). Both files
+are gitignored. Rerun the build whenever the codebook changes. REDCap variable names always come from this
+spec, never from a naming pattern: the day suffix is not always at the end, and some names contain typos
+(e.g. `daily_niv_fi02_8a_{d}`).
 
+### 3. Configure your site
+
+```bash
+cp config/real.example.json config/real.json
+```
+
+Edit `config/real.json` (gitignored):
+
+| key | meaning |
+|---|---|
+| `data_directory` | folder with your CLIF 2.1 tables and `clif_clinical_trials.<filetype>` |
+| `filetype` | `parquet` or `csv` |
+| `timezone` | site time zone, e.g. `US/Central`; study days and "8am" are site-local |
+| `output_directory` | keep `output/real` (row-level output, gitignored) |
+| `label` | `real`; names the summary files |
+
+`clif_clinical_trials` uses the format in [Cohort identification](#cohort-identification). `enrollment_dttm`
+is APS Study Time Zero; naive timestamps are read as site-local.
+
+### 4. Run the pipeline and the verifier on real data (in your own terminal)
+
+```bash
+uv run python code/run_aps.py --config config/real.json
+uv run python code/verify_aps.py --config config/real.json
+```
+
+`run_aps.py` writes:
+- `output/real/daily_assessment_upload.csv` — the file for REDCap **Data Import Tool** (bulk upload, no API),
+  event `daily_inhospital_f_arm_1`, one row per `record_id`
+- `output/real/daily_assessment_evidence.parquet` — every filled cell with its source timestamp, for audit
+- `output/summary/run_real.csv` — aggregate counts only
+
+`verify_aps.py` recomputes every cell independently from the raw CLIF tables, checks the file against the
+codebook (column names, formats, choice codes, min/max, record_id, event name, gate and "not collected"
+consistency) and writes `output/summary/verify_real.csv` (aggregates) plus `output/real/verify_mismatches.csv`
+(row-level, stays on site). It exits 1 on any error. Upload only after `RESULT: PASS`.
+
+### How fields are derived
+
+- **Study day 0** = calendar date of `enrollment_dttm` in site-local time; days -2..7 map to suffixes
+  `m2, m1, 0..7`.
+- **Index hospitalization** = the one containing `enrollment_dttm`; only its data are used.
+- **Gate** `dailysofa_perf_{d}` = 1 when the patient was in the index hospitalization that calendar day (and not
+  withdrawn), else 0 with every other field blank. Nothing is entered after discharge.
+- **Closest to 8am** = smallest time difference to 08:00 local, ties to the earlier measurement. Labs use
+  `lab_collect_dttm` (fallback `lab_result_dttm`). Lowest SpO2 and highest lactate/troponin use the day's
+  min/max.
+- **Not collected** (`daily_<lab>_nc_{d}` = 1) only when the day is available, no value exists, and the lab
+  category appears in the cohort's data at all. Labs CLIF does not carry (hematocrit, D-dimer, fibrinogen,
+  hs-troponin) stay blank for manual abstraction.
+- **Values**: implausible values removed with clifpy's outlier ranges; censored results (`<5`) entered as the
+  number; integer-validated fields rounded half-up; troponin converted from CLIF ng/L to REDCap ng/mL.
+  Hemoglobin is kept at 1 decimal although the codebook validates it as integer (flagged to the APS data team).
+- The CLIF-to-REDCap mapping lives in [config/redcap/daily_mapping.yaml](config/redcap/daily_mapping.yaml).
+
+### Try it on the demo data
+
+```bash
+uv run python code/make_demo_trial_table.py   # fake clif_clinical_trials: all 100 demo patients enrolled
+uv run python code/run_aps.py --config config/demo.json
+uv run python code/verify_aps.py --config config/demo.json
+```
+
+Demo enrollment = first ICU arrival + 12 h (or half the ICU stay if shorter). Outputs go to `output/demo/`.
+
+### Using Claude Code on this project
+
+`.claude/settings.json`, `.claude/hooks/` and `CLAUDE.md` keep real data out of the model:
+- deny rules on `data/phi`, `output/real`, `output/logs`;
+- a PreToolUse hook that blocks any tool call naming the real data path, `config/real.json` or `output/real`,
+  and shell commands that print rows (`.head(`, `.iloc[`, ...);
+- a prompt hook that drops pasted data rows, and an advisory PHI-pattern scanner on tool output.
+
+Add a deny rule for your real data path to `.claude/settings.local.json` (gitignored):
+
+```json
+{"permissions": {"deny": ["Read(//absolute/path/to/real/data/**)", "Edit(//absolute/path/to/real/data/**)"]}}
+```
+
+Open Claude Code in the `CLIF-APS` folder and run `/sensitive-data-check`; every required row should pass.
+Claude develops against `config/demo.json`; you run `config/real.json` yourself and share only
+`output/summary/*_real.csv`.
+
+### Legacy
+
+`code/00_setup.ipynb`, `code/01_daily_assessment.ipynb`, `config/daily_assessment_mapping.yaml`,
+`code/test_daily_assessment.py` and the Streamlit dashboard (`app/app.py`, which reads the notebook's
+intermediate files) are superseded by `run_aps.py` / `verify_aps.py` and kept for reference.
+
+## Demo data and licence
+
+`data/demo/` is the CLIF-formatted **MIMIC-IV Clinical Database Demo** (Johnson, A., Pollard, T., & Mark, R.,
+v2.2, PhysioNet, 2023; https://physionet.org/content/mimic-iv-demo/2.2/), released under the Open Data Commons
+Open Database License v1.0 (ODbL). It contains no real identifiers. `data/demo/clif_clinical_trials.parquet`
+is synthetic (made by `code/make_demo_trial_table.py`).

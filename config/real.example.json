@@ -1,0 +1,8 @@
+{
+    "site_name": "Your_Site_Name",
+    "data_directory": "/path/to/your/real/CLIF/data",
+    "filetype": "parquet",
+    "timezone": "US/Central",
+    "output_directory": "output/real",
+    "label": "real"
+}

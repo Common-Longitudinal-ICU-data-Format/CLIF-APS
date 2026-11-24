@@ -1,0 +1,51 @@
+# CLIF 2.1 -> REDCap "Daily Assessment/SOFA Scoring" (days -2..7), used by code/run_aps.py and code/verify_aps.py.
+# Field names are templates from config/redcap/daily_fields.csv ({d} = day suffix). Validation (integer /
+# number / min / max) is read from that spec, never repeated here.
+
+redcap_event_name: daily_inhospital_f_arm_1
+output_filename: daily_assessment_upload.csv
+
+days: {-2: m2, -1: m1, 0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7"}
+
+# 1 = Available (patient in the index hospitalization on that calendar day), 0 = Not Available.
+gate_field: dailysofa_perf_{d}
+
+anchor_hour: 8          # "closest to 8am", site-local time; ties go to the earlier measurement
+
+vitals:
+  daily_sbp_8a_{d}:      {clif: sbp,  method: closest}
+  daily_dbp_8a_{d}:      {clif: dbp,  method: closest}
+  daily_spo2_8a_{d}:     {clif: spo2, method: closest}
+  daily_spo2_lowest_{d}: {clif: spo2, method: min}
+
+# unit: expected CLIF 2.1 reference unit (normalized: lower case, µ/mc -> u, * -> ^). null = unitless.
+# convert: factor applied when the row's unit matches the key. Rows in any other unit are excluded and counted.
+labs:
+  daily_wbc_8a_{d}:       {clif: [wbc],                  method: closest, nc: "daily_wbc_nc_{d}",       unit: 10^3/ul}
+  daily_hgb_8a_{d}:       {clif: [hemoglobin],           method: closest, nc: "daily_hgb_nc_{d}",       unit: g/dl, decimals: 1}  # codebook says integer; kept at 1 dp by decision, flag to APS data team
+  daily_platelet_8a_{d}:  {clif: [platelet_count],       method: closest, nc: "daily_platelet_nc_{d}",  unit: 10^3/ul}
+  daily_anc_8a_{d}:       {clif: [neutrophils_absolute], method: closest, nc: "daily_anc_nc_{d}",       unit: 10^3/ul}
+  daily_alc_8a_{d}:       {clif: [lymphocytes_absolute], method: closest, nc: "daily_alc_nc_{d}",       unit: 10^3/ul}
+  daily_na_8a_{d}:        {clif: [sodium],               method: closest, nc: "daily_na_nc_{d}",        unit: mmol/l}
+  daily_k_8a_{d}:         {clif: [potassium],            method: closest, nc: "daily_k_nc_{d}",         unit: mmol/l}
+  daily_bicarb_8a_{d}:    {clif: [bicarbonate],          method: closest, nc: "daily_bicarb_nc_{d}",    unit: mmol/l}
+  daily_bun_8a_{d}:       {clif: [bun],                  method: closest, nc: "daily_bun_nc_{d}",       unit: mg/dl}
+  daily_gluc_8a_{d}:      {clif: [glucose_serum],        method: closest, nc: "daily_gluc_nc_{d}",      unit: mg/dl}
+  daily_cr_8a_{d}:        {clif: [creatinine],           method: closest, nc: "daily_cr_nc_{d}",        unit: mg/dl}
+  daily_alb_8a_{d}:       {clif: [albumin],              method: closest, nc: "daily_alb_nc_{d}",       unit: g/dl}
+  daily_tbili_8a_{d}:     {clif: [bilirubin_total],      method: closest, nc: "daily_tbili_nc_{d}",     unit: mg/dl}
+  daily_ast_8a_{d}:       {clif: [ast],                  method: closest, nc: "daily_ast_nc_{d}",       unit: u/l}
+  daily_alt_8a_{d}:       {clif: [alt],                  method: closest, nc: "daily_alt_nc_{d}",       unit: u/l}
+  daily_inr_8a_{d}:       {clif: [inr],                  method: closest, nc: "daily_inr_nc_{d}",       unit: null}
+  daily_ptt_8a_{d}:       {clif: [ptt],                  method: closest, nc: "daily_ptt_nc_{d}",       unit: sec}
+  daily_crp_8a_{d}:       {clif: [crp],                  method: closest, nc: "daily_crp_nc_{d}",       unit: mg/l}
+  daily_pct_8a_{d}:       {clif: [procalcitonin],        method: closest, nc: "daily_pct_nc_{d}",       unit: ng/ml}
+  daily_ferritin_8a_{d}:  {clif: [ferritin],             method: closest, nc: "daily_ferritin_nc_{d}",  unit: ng/ml}
+  daily_highest_lactate_{d}:  {clif: [lactate],          method: max,     nc: "daily_lactate_nc_{d}",   unit: mmol/l}
+  # OPEN DECISION: CLIF has no high-sensitivity flag. Conventional troponin (REDCap ng/mL) from troponin_t;
+  # CLIF 2.1 reference unit is ng/L, so divide by 1000. Revisit for UCMC (likely hs-troponin I).
+  daily_highest_troponin_{d}: {clif: [troponin_t],       method: max,     nc: "daily_troponin_nc_{d}",  unit: ng/ml, convert: {ng/l: 0.001}}
+
+# On the form but not in CLIF 2.1: value and "not collected" both left blank. Writing nc=1 would claim the
+# lab was not drawn when CLIF simply does not carry it.
+not_in_clif: ["daily_hct_8a_{d}", "daily_ddimer_8a_{d}", "daily_fibrinogen_8a_{d}", "daily_highest_hstroponin_{d}"]
