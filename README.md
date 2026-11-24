@@ -14,17 +14,20 @@ A pipeline to extract and transform CLIF data for patients enrolled in APS clini
 
 ## Cohort identification
 
-Patients enrolled in APS clinical trials. Use the CLIF clinical trials table, defined at the patient level with the below format:
+Patients enrolled in APS clinical trials. **The CLIF clinical trials table is required**: `record_id`,
+`patient_id` and `enrollment_dttm` define every row and study day of the CRF, so the pipeline stops if the table
+is missing, lacks one of those columns, or has blanks in them. Save it in `data_directory` as
+`clif_clinical_trials.<filetype>` (or `clif_clinical_trial.<filetype>`), one row per enrolled patient:
 
 | Field Name         | Type     | Description                                                                                               |
 |--------------------|----------|-----------------------------------------------------------------------------------------------------------|
-| record_id          | string   | Study-specific record identifier                                                                          |
-| patient_id         | string   | Unique identifier for each patient                                                                        |
+| record_id          | string   | **Required.** APS REDCap record ID; must match the REDCap project or the import creates new records      |
+| patient_id         | string   | **Required.** CLIF patient_id                                                                             |
 | trial_id           | string   | Unique identifier for the clinical trial (e.g., institutional trial ID, NCT number).                      |
 | trial_name         | string   | Descriptive name of the clinical trial.                                                                   |
 | arm_id             | string   | Identifier indicating which arm of the trial the patient was enrolled in.                                 |
-| enrollment_dttm    | datetime | Timestamp of patient enrollment in the clinical trial.                                                    |
-| withdrawal_dttm    | datetime | Timestamp of trial withdrawal if applicable.                                                              |
+| enrollment_dttm    | datetime | **Required.** APS Study Time Zero; its site-local calendar date is study day 0. Naive = site-local        |
+| withdrawal_dttm    | datetime | Optional. Days after the withdrawal date are marked Not Available                                         |
 
 ## Required CLIF tables and fields
 The current pipeline (`code/run_aps.py`, daily assessment labs and 8am vitals) reads **clinical_trials**,

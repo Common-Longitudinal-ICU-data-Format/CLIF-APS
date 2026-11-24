@@ -78,9 +78,31 @@ def to_site_tz(s, tz):
     return s.dt.tz_localize(tz) if s.dt.tz is None else s.dt.tz_convert(tz)
 
 
+TRIAL_TABLE_NAMES = ("clif_clinical_trials", "clif_clinical_trial")
+TRIAL_REQUIRED = ("record_id", "patient_id", "enrollment_dttm")
+
+
+def trial_table_path(cfg):
+    """The clinical trials table is required: (record_id, patient_id, enrollment_dttm) define the CRF."""
+    for name in TRIAL_TABLE_NAMES:
+        path = Path(cfg["data_directory"]) / f"{name}.{cfg['filetype']}"
+        if path.exists():
+            return path
+    raise SystemExit(
+        f"No clinical trials table found in data_directory (looked for {' or '.join(n + '.' + cfg['filetype'] for n in TRIAL_TABLE_NAMES)}).\n"
+        "It is required: record_id (APS REDCap record), patient_id (CLIF) and enrollment_dttm (Study Time Zero)\n"
+        "define every row and study day of the CRF. See README, 'Cohort identification'.")
+
+
 def load_trials(cfg):
-    path = Path(cfg["data_directory"]) / f"clif_clinical_trials.{cfg['filetype']}"
+    path = trial_table_path(cfg)
     trials = pd.read_parquet(path) if cfg["filetype"] == "parquet" else pd.read_csv(path)
+    missing = [c for c in TRIAL_REQUIRED if c not in trials.columns]
+    if missing:
+        raise SystemExit(f"{path.name}: missing required column(s) {missing}; required: {list(TRIAL_REQUIRED)}")
+    blank = {c: int(trials[c].isna().sum()) for c in TRIAL_REQUIRED if trials[c].isna().any()}
+    if blank:
+        raise SystemExit(f"{path.name}: blank values in required column(s) {blank}")
     trials["patient_id"] = trials["patient_id"].astype(str)
     trials["record_id"] = trials["record_id"].astype(str)
     trials["enrollment_dttm"] = to_site_tz(trials["enrollment_dttm"], cfg["timezone"])

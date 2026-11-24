@@ -135,8 +135,11 @@ def main():
             checks[("error", "choice code not in codebook")] += (~vals.isin(f["choice_codes"].split("|"))).sum()
 
     # ------------------------------------------------------------------ independent recomputation
-    trials = pd.read_parquet(data_dir / f"clif_clinical_trials.{cfg['filetype']}") if cfg["filetype"] == "parquet" \
-        else pd.read_csv(data_dir / f"clif_clinical_trials.{cfg['filetype']}")
+    trial_files = [data_dir / f"{n}.{cfg['filetype']}" for n in ("clif_clinical_trials", "clif_clinical_trial")]
+    trial_file = next((f for f in trial_files if f.exists()), None)
+    if trial_file is None:
+        raise SystemExit("No clinical trials table found in data_directory; it is required (see README, 'Cohort identification').")
+    trials = pd.read_parquet(trial_file) if cfg["filetype"] == "parquet" else pd.read_csv(trial_file)
     clif = ClifOrchestrator(data_directory=str(data_dir), filetype=cfg["filetype"], timezone=tz, output_directory=str(out_dir))
     hosp = clif.load_table("hospitalization", filters={"patient_id": trials["patient_id"].astype(str).tolist()}).df
     hosp_ids = hosp["hospitalization_id"].tolist()

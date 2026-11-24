@@ -13,8 +13,8 @@ dependencies = [
     "streamlit>=1.40.0",
 ]
 
-[tool.uv]
-dev-dependencies = [
+[dependency-groups]
+dev = [
     "jupyter>=1.0.0",
     "ipykernel>=6.29.0",
 ]
