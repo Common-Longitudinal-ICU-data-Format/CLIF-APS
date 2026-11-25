@@ -5,7 +5,7 @@ description = "A pipeline to extract and transform CLIF data for patients enroll
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "clifpy>=2.1.0",
+    "clifpy>=3.0.0",
     "numpy>=2.3.5",
     "pandas>=2.3.3",
     "plotly>=5.24.0",
@@ -18,3 +18,8 @@ dev = [
     "jupyter>=1.0.0",
     "ipykernel>=6.29.0",
 ]
+
+[tool.uv.sources]
+# CLIF 3.0 support (clinical_trial, input, output, transfusion tables; clif_version on ClifOrchestrator) is on
+# clifpy's main-3.0 branch, unreleased on PyPI. Pinned; switch to "clifpy>=3.0.0" from PyPI once released.
+clifpy = { git = "https://github.com/Common-Longitudinal-ICU-data-Format/clifpy", rev = "41eed36b929dc4a155f9136884c360203469408d" }

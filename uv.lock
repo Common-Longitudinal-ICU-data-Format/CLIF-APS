@@ -393,7 +393,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "clifpy", specifier = ">=2.1.0" },
+    { name = "clifpy", git = "https://github.com/Common-Longitudinal-ICU-data-Format/clifpy?rev=41eed36b929dc4a155f9136884c360203469408d" },
     { name = "numpy", specifier = ">=2.3.5" },
     { name = "pandas", specifier = ">=2.3.3" },
     { name = "plotly", specifier = ">=5.24.0" },
@@ -409,8 +409,8 @@ dev = [
 
 [[package]]
 name = "clifpy"
-version = "2.1.0"
-source = { registry = "https://pypi.org/simple" }
+version = "3.0.0"
+source = { git = "https://github.com/Common-Longitudinal-ICU-data-Format/clifpy?rev=41eed36b929dc4a155f9136884c360203469408d#41eed36b929dc4a155f9136884c360203469408d" }
 dependencies = [
     { name = "build" },
     { name = "duckdb" },
@@ -427,10 +427,6 @@ dependencies = [
     { name = "toml" },
     { name = "tqdm" },
     { name = "twine" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/bd/83/216a64264ff53ce5dcb25501d8c9742624cab0421c9529fb5dc95504e77d/clifpy-2.1.0.tar.gz", hash = "sha256:1af9b2d478a9b926c7d5c0ec48d38367cff84f0588bdfc9dfd31d7f4a10789f9", size = 2077182, upload-time = "2026-08-20T17:45:37.24Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/32/d9/5e7e674e7deef6d576bd869887fb02f71f7a8ea7dce11c7bbe614fd3da4f/clifpy-2.1.0-py3-none-any.whl", hash = "sha256:fd51f00a907f719b0147515500d3925a1f00dedc7d30d96c99e2ce3d6bd8bde1", size = 2136436, upload-time = "2026-08-20T17:45:36.012Z" },
 ]
 
 [[package]]

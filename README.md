@@ -6,7 +6,8 @@
 
 ## CLIF VERSION 
 
-[2].[1]
+3.0 (all tables are loaded and validated against the CLIF 3.0 schema with clifpy 3.0, pinned to the
+`main-3.0` branch until it is released on PyPI)
 
 ## Objective
 
@@ -14,23 +15,26 @@ A pipeline to extract and transform CLIF data for patients enrolled in APS clini
 
 ## Cohort identification
 
-Patients enrolled in APS clinical trials. **The CLIF clinical trials table is required**: `record_id`,
-`patient_id` and `enrollment_dttm` define every row and study day of the CRF, so the pipeline stops if the table
-is missing, lacks one of those columns, or has blanks in them. Save it in `data_directory` as
-`clif_clinical_trials.<filetype>` (or `clif_clinical_trial.<filetype>`), one row per enrolled patient:
+Patients enrolled in APS clinical trials, from the **CLIF 3.0 `clinical_trial` table, which is required**:
+`participant_id`, `patient_id`, `hospitalization_id` and `enrollment_dttm` define every row and study day of the
+CRF, so the pipeline stops if the table is missing, lacks one of those columns, or has blanks in them. Save it in
+`data_directory` as `clif_clinical_trial.<filetype>`, one row per enrolled participant:
 
 | Field Name         | Type     | Description                                                                                               |
 |--------------------|----------|-----------------------------------------------------------------------------------------------------------|
-| record_id          | string   | **Required.** APS REDCap record ID; must match the REDCap project or the import creates new records      |
+| participant_id     | string   | **Required.** APS REDCap record ID (written as `record_id`); must match the REDCap project or the import creates new records |
 | patient_id         | string   | **Required.** CLIF patient_id                                                                             |
-| trial_id           | string   | Unique identifier for the clinical trial (e.g., institutional trial ID, NCT number).                      |
-| trial_name         | string   | Descriptive name of the clinical trial.                                                                   |
-| arm_id             | string   | Identifier indicating which arm of the trial the patient was enrolled in.                                 |
+| hospitalization_id | string   | **Required.** The index hospitalization (the stay in which the participant was enrolled); only its data are used |
+| trial_id           | string   | Required by CLIF 3.0. Trial identifier (e.g. NCT number)                                                  |
+| trial_name         | string   | Descriptive name of the trial                                                                             |
+| arm_id             | string   | Required by CLIF 3.0. APS has one arm (`1`)                                                               |
+| consent_dttm       | datetime | Required by CLIF 3.0. Consent time                                                                        |
 | enrollment_dttm    | datetime | **Required.** APS Study Time Zero; its site-local calendar date is study day 0. Naive = site-local        |
+| randomized_dttm    | datetime | Required by CLIF 3.0. APS is not randomized: use enrollment_dttm                                          |
 | withdrawal_dttm    | datetime | Optional. Days after the withdrawal date are marked Not Available                                         |
 
 ## Required CLIF tables and fields
-The current pipeline (`code/run_aps.py`, daily assessment labs and 8am vitals) reads **clinical_trials**,
+The current pipeline (`code/run_aps.py`, daily assessment labs and 8am vitals) reads **clinical_trial**,
 **hospitalization**, **vitals** (`sbp`, `dbp`, `spo2`) and **labs**. The full APS form needs the tables below
 (based on [APS-CLIF crosswalk](data/APS_CLIF_crosswalk.csv)):
 
@@ -120,13 +124,13 @@ Edit `config/real.json` (gitignored):
 
 | key | meaning |
 |---|---|
-| `data_directory` | folder with your CLIF 2.1 tables and `clif_clinical_trials.<filetype>` |
+| `data_directory` | folder with your CLIF 3.0 tables and `clif_clinical_trial.<filetype>` |
 | `filetype` | `parquet` or `csv` |
 | `timezone` | site time zone, e.g. `US/Central`; study days and "8am" are site-local |
 | `output_directory` | keep `output/real` (row-level output, gitignored) |
 | `label` | `real`; names the summary files |
 
-`clif_clinical_trials` uses the format in [Cohort identification](#cohort-identification). `enrollment_dttm`
+`clif_clinical_trial` uses the CLIF 3.0 format in [Cohort identification](#cohort-identification). `enrollment_dttm`
 is APS Study Time Zero; naive timestamps are read as site-local.
 
 ### 4. Run the pipeline and the verifier on real data (in your own terminal)
@@ -151,7 +155,7 @@ consistency) and writes `output/summary/verify_real.csv` (aggregates) plus `outp
 
 - **Study day 0** = calendar date of `enrollment_dttm` in site-local time; days -2..7 map to suffixes
   `m2, m1, 0..7`.
-- **Index hospitalization** = the one containing `enrollment_dttm`; only its data are used.
+- **Index hospitalization** = the `clinical_trial` row's `hospitalization_id`; only its data are used.
 - **Gate** `dailysofa_perf_{d}` = 1 when the patient was in the index hospitalization that calendar day (and not
   withdrawn), else 0 with every other field blank. Nothing is entered after discharge.
 - **Closest to 8am** = smallest time difference to 08:00 local, ties to the earlier measurement. Labs use
@@ -168,7 +172,7 @@ consistency) and writes `output/summary/verify_real.csv` (aggregates) plus `outp
 ### Try it on the demo data
 
 ```bash
-uv run python code/make_demo_trial_table.py   # fake clif_clinical_trials: all 100 demo patients enrolled
+uv run python code/make_demo_trial_table.py   # fake clif_clinical_trial: all 100 demo patients enrolled
 uv run python code/run_aps.py --config config/demo.json
 uv run python code/verify_aps.py --config config/demo.json
 ```
@@ -201,7 +205,7 @@ intermediate files) are superseded by `run_aps.py` / `verify_aps.py` and kept fo
 
 ## Demo data and licence
 
-`data/demo/` is the CLIF-formatted **MIMIC-IV Clinical Database Demo** (Johnson, A., Pollard, T., & Mark, R.,
+`data/demo/` is the CLIF 3.0-formatted **MIMIC-IV Clinical Database Demo** (from clifpy's `main-3.0` branch) (Johnson, A., Pollard, T., & Mark, R.,
 v2.2, PhysioNet, 2023; https://physionet.org/content/mimic-iv-demo/2.2/), released under the Open Data Commons
-Open Database License v1.0 (ODbL). It contains no real identifiers. `data/demo/clif_clinical_trials.parquet`
+Open Database License v1.0 (ODbL). It contains no real identifiers. `data/demo/clif_clinical_trial.parquet`
 is synthetic (made by `code/make_demo_trial_table.py`).

@@ -1,4 +1,4 @@
-"""CLIF 2.1 -> REDCap import CSV for the APS "Daily Assessment/SOFA Scoring" instruments (study days -2..7).
+"""CLIF 3.0 -> REDCap import CSV for the APS "Daily Assessment/SOFA Scoring" instruments (study days -2..7).
 
     uv run python code/run_aps.py --config config/demo.json     # Claude / development
     uv run python code/run_aps.py --config config/real.json     # researcher, own terminal
@@ -11,11 +11,12 @@ stdout carries the aggregate summary only.
 
 Rules (see config/redcap/daily_mapping.yaml for the field list):
   - Study day 0 = calendar date of enrollment_dttm in site-local time; day d = that date + d.
-  - Index hospitalization = the one whose admission..discharge contains enrollment_dttm (earliest if several).
-    Only its data is used. A day is Available (gate = 1) when its date falls between the admission and
+  - Cohort = CLIF 3.0 clinical_trial (required): participant_id -> REDCap record_id; its hospitalization_id is
+    the index stay and only that stay's data is used. A day is Available (gate = 1) when its date falls between the admission and
     discharge dates (and is not after withdrawal); otherwise gate = 0 and every other field stays blank.
   - "Closest to 8am" = smallest |t - 08:00 local| on that date, ties to the earlier time, then the lower value.
-    Labs use lab_collect_dttm, falling back to lab_result_dttm.
+    Labs use lab_collect_dttm, falling back to lab_result_dttm; vitals use measured_dttm (3.0) if present,
+    else recorded_dttm.
   - Physiologically implausible values are nulled with clifpy's outlier ranges (counted in the summary).
     REDCap min/max are soft limits (import warnings, e.g. ferritin max 999); values outside them are kept
     and reported by code/verify_aps.py.
@@ -41,6 +42,7 @@ SPEC_PATH = ROOT / "config" / "redcap" / "daily_fields.csv"
 MAPPING_PATH = ROOT / "config" / "redcap" / "daily_mapping.yaml"
 SUMMARY_DIR = ROOT / "output" / "summary"
 SMALL_CELL = 11
+CLIF_VERSION = "3.0"  # every table is loaded and validated against the CLIF 3.0 schema
 CENSORED = re.compile(r"^\s*[<>]=?\s*(-?\d+(?:\.\d+)?)\s*$")
 
 
@@ -78,47 +80,60 @@ def to_site_tz(s, tz):
     return s.dt.tz_localize(tz) if s.dt.tz is None else s.dt.tz_convert(tz)
 
 
-TRIAL_TABLE_NAMES = ("clif_clinical_trials", "clif_clinical_trial")
-TRIAL_REQUIRED = ("record_id", "patient_id", "enrollment_dttm")
+TRIAL_REQUIRED = ("participant_id", "patient_id", "hospitalization_id", "enrollment_dttm")
 
 
-def trial_table_path(cfg):
-    """The clinical trials table is required: (record_id, patient_id, enrollment_dttm) define the CRF."""
-    for name in TRIAL_TABLE_NAMES:
-        path = Path(cfg["data_directory"]) / f"{name}.{cfg['filetype']}"
-        if path.exists():
-            return path
-    raise SystemExit(
-        f"No clinical trials table found in data_directory (looked for {' or '.join(n + '.' + cfg['filetype'] for n in TRIAL_TABLE_NAMES)}).\n"
-        "It is required: record_id (APS REDCap record), patient_id (CLIF) and enrollment_dttm (Study Time Zero)\n"
-        "define every row and study day of the CRF. See README, 'Cohort identification'.")
+def table_columns(cfg, table):
+    """Column names in a CLIF file without reading its rows (optional 3.0 columns may be absent)."""
+    path = Path(cfg["data_directory"]) / f"clif_{table}.{cfg['filetype']}"
+    if cfg["filetype"] == "parquet":
+        import pyarrow.parquet as pq
+        return set(pq.read_schema(path).names)
+    return set(pd.read_csv(path, nrows=0).columns)
 
 
-def load_trials(cfg):
-    path = trial_table_path(cfg)
-    trials = pd.read_parquet(path) if cfg["filetype"] == "parquet" else pd.read_csv(path)
-    missing = [c for c in TRIAL_REQUIRED if c not in trials.columns]
+def load_trial(clif, cfg):
+    """CLIF 3.0 clinical_trial: participant_id (= REDCap record_id), patient_id, hospitalization_id (index stay),
+    enrollment_dttm (Study Time Zero) define every CRF row and study day, so the table is required."""
+    path = Path(cfg["data_directory"]) / f"clif_clinical_trial.{cfg['filetype']}"
+    if not path.exists():
+        raise SystemExit(
+            f"No clinical trial table found: {path.name} is not in data_directory.\n"
+            "It is required (CLIF 3.0 clinical_trial): participant_id (APS REDCap record), patient_id, hospitalization_id\n"
+            "and enrollment_dttm (Study Time Zero) define every row and study day of the CRF. See README, 'Cohort identification'.")
+    trial = clif.load_table("clinical_trial").df.copy()
+    missing = [c for c in TRIAL_REQUIRED if c not in trial.columns]
     if missing:
         raise SystemExit(f"{path.name}: missing required column(s) {missing}; required: {list(TRIAL_REQUIRED)}")
-    blank = {c: int(trials[c].isna().sum()) for c in TRIAL_REQUIRED if trials[c].isna().any()}
+    blank = {c: int(trial[c].isna().sum()) for c in TRIAL_REQUIRED if trial[c].isna().any()}
     if blank:
         raise SystemExit(f"{path.name}: blank values in required column(s) {blank}")
-    trials["patient_id"] = trials["patient_id"].astype(str)
-    trials["record_id"] = trials["record_id"].astype(str)
-    trials["enrollment_dttm"] = to_site_tz(trials["enrollment_dttm"], cfg["timezone"])
-    trials["withdrawal_dttm"] = to_site_tz(trials.get("withdrawal_dttm", pd.Series(pd.NaT, index=trials.index)), cfg["timezone"])
-    if trials["record_id"].duplicated().any():
-        raise SystemExit("clinical_trials: record_id is not unique")
-    return trials
+    for c in ("participant_id", "patient_id", "hospitalization_id"):
+        trial[c] = trial[c].astype(str)
+    if trial["participant_id"].duplicated().any():
+        raise SystemExit(f"{path.name}: participant_id is not unique")
+    trial["record_id"] = trial["participant_id"]
+    trial["enrollment_dttm"] = to_site_tz(trial["enrollment_dttm"], cfg["timezone"])
+    trial["withdrawal_dttm"] = to_site_tz(trial.get("withdrawal_dttm", pd.Series(pd.NaT, index=trial.index)), cfg["timezone"])
+    return trial
 
 
 # ------------------------------------------------------------------------------------------- cohort
-def assign_index_hospitalization(trials, hosp):
-    cand = trials.merge(hosp[["patient_id", "hospitalization_id", "admission_dttm", "discharge_dttm"]], on="patient_id")
-    open_end = cand["discharge_dttm"].isna()
-    contains = (cand["admission_dttm"] <= cand["enrollment_dttm"]) & (open_end | (cand["enrollment_dttm"] <= cand["discharge_dttm"]))
-    idx = cand[contains].sort_values(["record_id", "admission_dttm"]).drop_duplicates("record_id")
-    return trials.merge(idx[["record_id", "hospitalization_id", "admission_dttm", "discharge_dttm"]], on="record_id", how="left")
+def attach_hospitalization(trial, hosp):
+    """The index stay is the trial's hospitalization_id. Rows whose stay is missing or belongs to another patient
+    get no index stay (every day Not Available); enrollment outside the stay is only counted."""
+    h = hosp[["hospitalization_id", "patient_id", "admission_dttm", "discharge_dttm"]].rename(columns={"patient_id": "hosp_patient_id"})
+    cohort = trial.merge(h, on="hospitalization_id", how="left")
+    found = cohort["admission_dttm"].notna()
+    wrong_patient = found & (cohort["hosp_patient_id"].astype(str) != cohort["patient_id"])
+    ok = found & ~wrong_patient
+    outside = ok & ~((cohort["admission_dttm"] <= cohort["enrollment_dttm"])
+                     & (cohort["discharge_dttm"].isna() | (cohort["enrollment_dttm"] <= cohort["discharge_dttm"])))
+    stats = [("records_hospitalization_not_found", int((~found).sum())),
+             ("records_hospitalization_other_patient", int(wrong_patient.sum())),
+             ("records_enrollment_outside_hospitalization", int(outside.sum()))]
+    cohort.loc[~ok, ["hospitalization_id", "admission_dttm", "discharge_dttm"]] = [None, pd.NaT, pd.NaT]
+    return cohort.drop(columns="hosp_patient_id"), stats
 
 
 def build_days(cohort, days):
@@ -210,18 +225,18 @@ def main():
     summary = []  # (metric, count)
 
     clif = ClifOrchestrator(data_directory=cfg["data_directory"], filetype=cfg["filetype"],
-                            timezone=cfg["timezone"], output_directory=str(out_dir))
-    trials = load_trials(cfg)
-    hosp = clif.load_table("hospitalization", filters={"patient_id": trials["patient_id"].tolist()}).df
-    hosp["patient_id"] = hosp["patient_id"].astype(str)
-    cohort = assign_index_hospitalization(trials, hosp)
+                            timezone=cfg["timezone"], output_directory=str(out_dir), clif_version=CLIF_VERSION)
+    trials = load_trial(clif, cfg)
+    hosp = clif.load_table("hospitalization", filters={"hospitalization_id": trials["hospitalization_id"].tolist()}).df
+    hosp["hospitalization_id"] = hosp["hospitalization_id"].astype(str)
+    cohort, cohort_stats = attach_hospitalization(trials, hosp)
     day_df = build_days(cohort, days)
     hosp_ids = cohort["hospitalization_id"].dropna().tolist()
     hosp_to_record = cohort.dropna(subset=["hospitalization_id"]).set_index("hospitalization_id")["record_id"]
 
     summary += [("records_in_trial_table", len(trials)),
                 ("records_with_index_hospitalization", cohort["hospitalization_id"].notna().sum()),
-                ("records_without_index_hospitalization", cohort["hospitalization_id"].isna().sum())]
+                *cohort_stats]
 
     def with_record_and_date(df, time_col):
         df = df[df["hospitalization_id"].isin(hosp_to_record.index)].copy()
@@ -234,11 +249,15 @@ def main():
 
     # ---- vitals
     vit_cats = sorted({m["clif"] for m in mapping["vitals"].values()})
+    has_measured = "measured_dttm" in table_columns(cfg, "vitals")  # CLIF 3.0 optional bedside time
     vit, n_out = load_without_outliers(clif, "vitals", "vital_value",
-                                       columns=["hospitalization_id", "recorded_dttm", "vital_category", "vital_value"],
+                                       columns=["hospitalization_id", "recorded_dttm", "vital_category", "vital_value"]
+                                       + (["measured_dttm"] if has_measured else []),
                                        filters={"hospitalization_id": hosp_ids, "vital_category": vit_cats})
     summary.append(("vital_rows_nulled_as_outliers", n_out))
-    vit = with_record_and_date(vit, "recorded_dttm")
+    vit["vital_time"] = vit["measured_dttm"].fillna(vit["recorded_dttm"]) if has_measured else vit["recorded_dttm"]
+    summary.append(("vital_rows_timed_by_measured_dttm", int(vit["measured_dttm"].notna().sum()) if has_measured else 0))
+    vit = with_record_and_date(vit, "vital_time")
     for field, m in mapping["vitals"].items():
         ev = vit[vit["vital_category"] == m["clif"]].rename(columns={"vital_value": "value"})
         ev = ev[ev["value"].notna()]

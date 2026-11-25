@@ -1,6 +1,6 @@
 # CLIF-APS
 
-Pipeline: CLIF 2.1 tables for patients enrolled in the APS trial → CSV for the REDCap Data Import
+Pipeline: CLIF 3.0 tables for patients enrolled in the APS trial → CSV for the REDCap Data Import
 Tool (bulk upload, no API). Built with `clifpy`, run with `uv`.
 
 ## Sensitive-data rules (from clif-sensitive-data-demo; code goes to the data, data never goes to the model)
@@ -16,8 +16,8 @@ Tool (bulk upload, no API). Built with `clifpy`, run with `uv`.
 - Run `/sensitive-data-check` before any real-data work.
 
 ## Commands
-- `uv sync` — environment (clifpy 2.1.0)
-- `uv run python code/make_demo_trial_table.py` — fake `clif_clinical_trials` for the demo (all 100 patients)
+- `uv sync` — environment (clifpy 3.0.0, pinned git commit on the `main-3.0` branch)
+- `uv run python code/make_demo_trial_table.py` — fake CLIF 3.0 `clif_clinical_trial` for the demo (all 100 patients)
 - `uv run python code/build_redcap_spec.py` — codebook export → `config/redcap/daily_fields.csv` (rerun if the codebook changes)
 - `uv run python code/run_aps.py --config config/demo.json` — REDCap upload CSV + aggregate run summary
 - `uv run python code/verify_aps.py --config config/demo.json` — independent recomputation + import checks; exit 1 on failure

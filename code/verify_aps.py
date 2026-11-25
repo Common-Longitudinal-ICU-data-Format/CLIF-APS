@@ -1,4 +1,4 @@
-"""Independently re-derive the REDCap daily upload from raw CLIF tables and check that REDCap will import it.
+"""Independently re-derive the REDCap daily upload from raw CLIF 3.0 tables and check that REDCap will import it.
 
     uv run python code/verify_aps.py --config config/demo.json
     uv run python code/verify_aps.py --config config/real.json   # researcher, own terminal
@@ -135,22 +135,25 @@ def main():
             checks[("error", "choice code not in codebook")] += (~vals.isin(f["choice_codes"].split("|"))).sum()
 
     # ------------------------------------------------------------------ independent recomputation
-    trial_files = [data_dir / f"{n}.{cfg['filetype']}" for n in ("clif_clinical_trials", "clif_clinical_trial")]
-    trial_file = next((f for f in trial_files if f.exists()), None)
-    if trial_file is None:
-        raise SystemExit("No clinical trials table found in data_directory; it is required (see README, 'Cohort identification').")
+    trial_file = data_dir / f"clif_clinical_trial.{cfg['filetype']}"
+    if not trial_file.exists():
+        raise SystemExit(f"{trial_file.name} not found in data_directory; the CLIF 3.0 clinical_trial table is required (see README).")
     trials = pd.read_parquet(trial_file) if cfg["filetype"] == "parquet" else pd.read_csv(trial_file)
-    clif = ClifOrchestrator(data_directory=str(data_dir), filetype=cfg["filetype"], timezone=tz, output_directory=str(out_dir))
-    hosp = clif.load_table("hospitalization", filters={"patient_id": trials["patient_id"].astype(str).tolist()}).df
+    trials["record_id"] = trials["participant_id"].astype(str)
+    clif = ClifOrchestrator(data_directory=str(data_dir), filetype=cfg["filetype"], timezone=tz,
+                            output_directory=str(out_dir), clif_version="3.0")
+    hosp = clif.load_table("hospitalization", filters={"hospitalization_id": trials["hospitalization_id"].astype(str).tolist()}).df
     hosp_ids = hosp["hospitalization_id"].tolist()
 
-    def raw(table, value_col, columns):
+    def raw(table, value_col, columns=None):
         obj = clif.load_table(table, columns=columns, filters={"hospitalization_id": hosp_ids})
         with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):  # clifpy progress bars
             apply_outlier_handling(obj)
         return obj.df
 
-    vitals = raw("vitals", "vital_value", ["hospitalization_id", "recorded_dttm", "vital_category", "vital_value"])
+    vitals = raw("vitals", "vital_value")  # all columns: picks up CLIF 3.0 measured_dttm when the site has it
+    if "measured_dttm" not in vitals.columns:
+        vitals["measured_dttm"] = pd.NaT
     labs = raw("labs", "lab_value_numeric", ["hospitalization_id", "lab_collect_dttm", "lab_result_dttm", "lab_category",
                                               "lab_value", "lab_value_numeric", "reference_unit"])
     vit_by_h = {h: g for h, g in vitals.groupby("hospitalization_id")}
@@ -165,13 +168,11 @@ def main():
         x = pd.Timestamp(x)
         return x.tz_localize(tz) if x.tzinfo is None else x.tz_convert(tz)
 
-    index_hosp = {}  # record_id -> index hospitalization row (or None)
+    index_hosp = {}  # record_id -> the trial's hospitalization row, if it exists and belongs to that patient
+    by_id = {str(h.hospitalization_id): h for h in hosp.itertuples(index=False)}
     for tr in trials.itertuples(index=False):
-        enroll = site_time(tr.enrollment_dttm)
-        mine = hosp[hosp["patient_id"].astype(str) == str(tr.patient_id)]
-        index_hosp[str(tr.record_id)] = next(
-            (h for h in sorted(mine.itertuples(index=False), key=lambda r: r.admission_dttm)
-             if h.admission_dttm <= enroll and (pd.isna(h.discharge_dttm) or enroll <= h.discharge_dttm)), None)
+        h = by_id.get(str(tr.hospitalization_id))
+        index_hosp[str(tr.record_id)] = h if h is not None and str(h.patient_id) == str(tr.patient_id) else None
     index_ids = {h.hospitalization_id for h in index_hosp.values() if h is not None}
     lab_cats_present = set(labs.loc[labs["hospitalization_id"].isin(index_ids), "lab_category"])
 
@@ -202,8 +203,9 @@ def main():
             if available:
                 for t, m in mp["vitals"].items():
                     ev = [] if vit is None else [
-                        (r.recorded_dttm, float(r.vital_value)) for r in vit.itertuples(index=False)
-                        if r.vital_category == m["clif"] and pd.notna(r.vital_value) and start <= r.recorded_dttm < end]
+                        (when, float(r.vital_value)) for r in vit.itertuples(index=False)
+                        for when in [r.measured_dttm if pd.notna(r.measured_dttm) else r.recorded_dttm]
+                        if r.vital_category == m["clif"] and pd.notna(r.vital_value) and start <= when < end]
                     exp[t.replace("{d}", s)] = fmt(choose(ev, m["method"], anchor), spec.loc[t, "validation"])
                 for t, m in mp["labs"].items():
                     factors = {m["unit"]: 1.0, **{unit_key(k): v for k, v in (m.get("convert") or {}).items()}}
