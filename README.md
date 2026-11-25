@@ -34,8 +34,10 @@ CRF, so the pipeline stops if the table is missing, lacks one of those columns, 
 | withdrawal_dttm    | datetime | Optional. Days after the withdrawal date are marked Not Available                                         |
 
 ## Required CLIF tables and fields
-The current pipeline (`code/run_aps.py`, daily assessment labs and 8am vitals) reads **clinical_trial**,
-**hospitalization**, **vitals** (`sbp`, `dbp`, `spo2`) and **labs**. The full APS form needs the tables below
+The current pipeline (`code/run_aps.py`, Daily Assessment) reads **clinical_trial**, **hospitalization**,
+**vitals** (`sbp`, `dbp`, `spo2`, `respiratory_rate`), **labs**, **respiratory_support**,
+**medication_admin_continuous** (vasoactives, `tpn`), **patient_assessments** (`gcs_total`), and if present the
+CLIF 3.0 **input** and **mcs** tables. The full APS form needs the tables below
 (based on [APS-CLIF crosswalk](data/APS_CLIF_crosswalk.csv)):
 
 1. **patient**: `patient_id`, `sex_category`, `race_category`, `ethnicity_category`, `language_category`, `death_dttm`
@@ -153,21 +155,70 @@ consistency) and writes `output/summary/verify_real.csv` (aggregates) plus `outp
 
 ### How fields are derived
 
+The pipeline fills the **Daily Assessment/SOFA Scoring** instruments (study days -2..7); the other in-hospital
+instruments are next (they need the full REDCap Data Dictionary export for exact variable names). Every rule and
+REDCap field name is in [config/redcap/daily_mapping.yaml](config/redcap/daily_mapping.yaml).
+
 - **Study day 0** = calendar date of `enrollment_dttm` in site-local time; days -2..7 map to suffixes
-  `m2, m1, 0..7`.
-- **Index hospitalization** = the `clinical_trial` row's `hospitalization_id`; only its data are used.
+  `m2, m1, 0..7`. Only the `clinical_trial` row's `hospitalization_id` is used.
 - **Gate** `dailysofa_perf_{d}` = 1 when the patient was in the index hospitalization that calendar day (and not
   withdrawn), else 0 with every other field blank. Nothing is entered after discharge.
-- **Closest to 8am** = smallest time difference to 08:00 local, ties to the earlier measurement. Labs use
-  `lab_collect_dttm` (fallback `lab_result_dttm`). Lowest SpO2 and highest lactate/troponin use the day's
-  min/max.
-- **Not collected** (`daily_<lab>_nc_{d}` = 1) only when the day is available, no value exists, and the lab
-  category appears in the cohort's data at all. Labs CLIF does not carry (hematocrit, D-dimer, fibrinogen,
-  hs-troponin) stay blank for manual abstraction.
+- **Branching**: the REDCap branching logic from the codebook is applied, so a value is written only where the
+  form would show the field (e.g. IMV settings only when respiratory support is IMV).
+- **Closest to 8am** = smallest time difference to 08:00 local, ties to the earlier measurement. Vitals use the
+  CLIF 3.0 bedside time `measured_dttm` when present (else `recorded_dttm`); labs use `lab_collect_dttm`
+  (fallback `lab_result_dttm`). Lowest SpO2 and highest lactate/troponin use the day's min/max.
+- **Respiratory support** at the 8am SpO2, the lowest SpO2 and the lowest PaO2: the last `respiratory_support`
+  row at or before that time **within 4 h** (rows without a device belong to the device charted before them;
+  each setting is used only if charted for that device within 4 h). **No row in the prior 12 h = room air**
+  (code 7). A last row 4-12 h old is left blank for chart review. ECMO comes from the CLIF 3.0 `mcs` table when
+  present. IMV/NIV/HFNC/standard-O2 settings map to CLIF set/observed columns; observed RR falls back to vitals
+  `respiratory_rate` within 60 min; NIV IPAP = `peak_inspiratory_pressure_set`, else PEEP + pressure support.
+- **Lowest PaO2**: lowest `po2_arterial` of the day, its time (HH:MM), and pH / PaCO2 / SaO2 from the same draw
+  (identical collect time); SpO2 at that time = nearest SpO2 within 60 min.
+- **Vasopressors** infusing at the 8am SBP: per drug the last `medication_admin_continuous` row within 4 h,
+  running unless it is a stop / not-administered action or dose 0; units and rate converted to the form's
+  mcg/min, mcg/kg/min or units/min (CLIF 3.0 `angiotensin_ii` from ng/kg/min).
+- **GCS** closest to 8am; on IMV a total <= 11 is coded as "T" (3T-11T). No GCS that day = "not documented".
+- **Nutrition**: oral (`input` po_intake) and TPN (`input` parenteral_nutrition or a running `tpn` infusion)
+  within 4 h of 8am. Full vs trophic tube feeding is left for chart review.
+- **Labs**, including CLIF 3.0 hematocrit, D-dimer and fibrinogen. **Not collected** (= 1) only when the day is
+  available, no value exists, and the lab category appears in the cohort's data at all; hs-troponin has no CLIF
+  category and stays blank for manual abstraction.
 - **Values**: implausible values removed with clifpy's outlier ranges; censored results (`<5`) entered as the
   number; integer-validated fields rounded half-up; troponin converted from CLIF ng/L to REDCap ng/mL.
   Hemoglobin is kept at 1 decimal although the codebook validates it as integer (flagged to the APS data team).
-- The CLIF-to-REDCap mapping lives in [config/redcap/daily_mapping.yaml](config/redcap/daily_mapping.yaml).
+
+### Coverage: what the pipeline filled and what is left for chart abstraction
+
+Every run writes `output/summary/coverage_<label>.csv` (aggregates only, counts 1-10 shown as `<11`). The unit is
+one REDCap question on one in-hospital participant-day (a lab value and its "not collected" flag count as one
+question; a checkbox as one), classified as:
+
+| class | meaning |
+|---|---|
+| `auto` | answered by the pipeline (`auto_absence` = the subset answered from the absence of charting: lab not collected, GCS not documented, no PaO2, room air with no device charted in 12 h) |
+| `partial` | answered in part (nutrition: oral/TPN filled, tube feeding left for the abstractor) |
+| `manual` | shown by the form's branching but blank: **chart abstraction remaining** |
+| `pending` | hidden only because its parent question is still manual (may become manual once answered) |
+
+Rows are per question, per form section and in total, with `pct_auto` = auto / (auto + partial + manual).
+
+`uv run python code/crf_coverage.py` summarizes the **whole CRF** (all instruments) from the crosswalk inventory
+`config/redcap/crf_elements.csv` (from the APS data team; gitignored): per instrument, questions the pipeline fills
+now, derivable from CLIF but not built yet, partial, not in CLIF, and non-EHR, unweighted and weighted by how often
+each question repeats per participant.
+
+### Tests
+
+```bash
+uv run python code/test_synthetic.py    # demo + synthetic scenario: hand-computed values and verifier PASS
+uv run python code/test_mutations.py    # verifier must catch every reintroduced bug (about 8 minutes)
+```
+
+`test_synthetic.py` injects a fully specified day into two empty demo participant-days (IMV on ECMO with bedside
+times, mcg/min, units/hr and ng/kg/min infusions, a stopped infusion, CLIF 3.0 labs, an ABG, GCS on IMV, TPN; and a room-air
+day with oral intake) because MIMIC lacks those data.
 
 ### Try it on the demo data
 

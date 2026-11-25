@@ -1,4 +1,4 @@
-# CLIF 2.1 -> REDCap "Daily Assessment/SOFA Scoring" (days -2..7), used by code/run_aps.py and code/verify_aps.py.
+# CLIF 3.0 -> REDCap "Daily Assessment/SOFA Scoring" (days -2..7), used by code/run_aps.py and code/verify_aps.py.
 # Field names are templates from config/redcap/daily_fields.csv ({d} = day suffix). Validation (integer /
 # number / min / max) is read from that spec, never repeated here.
 
@@ -18,7 +18,7 @@ vitals:
   daily_spo2_8a_{d}:     {clif: spo2, method: closest}
   daily_spo2_lowest_{d}: {clif: spo2, method: min}
 
-# unit: expected CLIF 2.1 reference unit (normalized: lower case, µ/mc -> u, * -> ^). null = unitless.
+# unit: expected CLIF 3.0 reference unit (normalized: lower case, µ/mc -> u, * -> ^). null = unitless.
 # convert: factor applied when the row's unit matches the key. Rows in any other unit are excluded and counted.
 labs:
   daily_wbc_8a_{d}:       {clif: [wbc],                  method: closest, nc: "daily_wbc_nc_{d}",       unit: 10^3/ul}
@@ -41,11 +41,138 @@ labs:
   daily_crp_8a_{d}:       {clif: [crp],                  method: closest, nc: "daily_crp_nc_{d}",       unit: mg/l}
   daily_pct_8a_{d}:       {clif: [procalcitonin],        method: closest, nc: "daily_pct_nc_{d}",       unit: ng/ml}
   daily_ferritin_8a_{d}:  {clif: [ferritin],             method: closest, nc: "daily_ferritin_nc_{d}",  unit: ng/ml}
+  daily_hct_8a_{d}:       {clif: [hematocrit, hematocrit_percent], method: closest, nc: "daily_hct_nc_{d}", unit: "%"}
+  daily_ddimer_8a_{d}:    {clif: [d_dimer],              method: closest, nc: "daily_ddimer_nc_{d}",    unit: ug/ml, convert: {mg/l: 1.0}}  # REDCap mg/L == ug/mL
+  daily_fibrinogen_8a_{d}: {clif: [fibrinogen],          method: closest, nc: "daily_fibrinogen_nc_{d}", unit: mg/dl}
   daily_highest_lactate_{d}:  {clif: [lactate],          method: max,     nc: "daily_lactate_nc_{d}",   unit: mmol/l}
   # OPEN DECISION: CLIF has no high-sensitivity flag. Conventional troponin (REDCap ng/mL) from troponin_t;
   # CLIF 2.1 reference unit is ng/L, so divide by 1000. Revisit for UCMC (likely hs-troponin I).
   daily_highest_troponin_{d}: {clif: [troponin_t],       method: max,     nc: "daily_troponin_nc_{d}",  unit: ng/ml, convert: {ng/l: 0.001}}
 
-# On the form but not in CLIF 2.1: value and "not collected" both left blank. Writing nc=1 would claim the
+# On the form but not in CLIF 3.0: value and "not collected" both left blank. Writing nc=1 would claim the
 # lab was not drawn when CLIF simply does not carry it.
-not_in_clif: ["daily_hct_8a_{d}", "daily_ddimer_8a_{d}", "daily_fibrinogen_8a_{d}", "daily_highest_hstroponin_{d}"]
+not_in_clif: ["daily_highest_hstroponin_{d}"]
+
+# ------------------------------------------------------------------------------------------------------------
+# Respiratory support "in effect" at a time t (8am SpO2, lowest SpO2, lowest PaO2):
+#   the last respiratory_support row at or before t within carry_forward_hours; rows without a device belong to
+#   the previous device; a setting is used only if it was charted (same device episode) within carry_forward_hours.
+#   No row at all in the prior room_air_if_none_hours -> room air (code 7, counted as inferred). A row older than
+#   carry_forward_hours but within room_air_if_none_hours -> left blank for chart review.
+#   ECMO: if the site has the CLIF 3.0 mcs table, an ecmo row within carry_forward_hours means ECMO is running.
+respiratory:
+  carry_forward_hours: 4
+  room_air_if_none_hours: 12
+  rr_from_vitals_minutes: 60        # observed RR: resp_rate_obs, else vitals respiratory_rate within +-60 min
+  support_codes:                    # daily_resp_* radio
+    ecmo_with_imv: "1"
+    ecmo_without_imv: "2"
+    imv: "3"
+    nippv: "4"
+    cpap: "4"
+    hfnc: "5"
+    nasal_cannula: "6"
+    face_mask: "6"
+    trach_collar: "6"
+    t_piece: "6"
+    blow_by: "6"
+    room_air: "7"
+    other: "99"
+  imv_mode_codes: {acvc: "1", pressure_control: "2", prvc: "3", aprv: "4", ps_or_cpap: "5", simv: "6", volume_support: "6", avaps: "6", other: "6"}
+  imv_mode_unknown: "99"
+  imv_mode_other_text: {simv: SIMV, volume_support: Volume support, avaps: AVAPS}
+  niv_mode: {cpap_device: "2", avaps_mode: "3", default: "1"}   # nippv = BiPAP unless mode is AVAPS
+  at_8a:
+    support: daily_resp_8a_{d}
+    imv_mode: daily_imv_mode_8a_{d}
+    imv_mode_other: daily_imv_mode_other_8a_{d}
+    niv_mode: daily_niv_mode_8a_{d}
+    # field -> CLIF setting(s), first non-missing wins; "rr" = observed RR rule above; "niv_ipap" = PIP set, else PEEP + PS
+    settings:
+      daily_imv_fio2_8a_{d}: [fio2_set]
+      daily_epap_8a_{d}: [peep_set, peep_obs]
+      daily_ps_8a_{d}: [pressure_support_set]
+      daily_dp_8a_{d}: [pressure_control_set]
+      daily_set_tv_set_8a_{d}: [tidal_volume_set]
+      daily_tv_8a_{d}: [tidal_volume_obs]
+      daily_resp_rate_8a_{d}: [rr]
+      daily_mean_air_pres_8a_{d}: [mean_airway_pressure_obs]
+      daily_peak_pres_8a_{d}: [peak_inspiratory_pressure_obs]
+      daily_plateau_8a_{d}: [plateau_pressure_obs]
+      daily_minvent_8a_{d}: [minute_vent_obs]
+      daily_niv_epap_8a_{d}: [peep_set]
+      daily_niv_ipap_8a_{d}: [niv_ipap]
+      daily_niv_fi02_8a_{d}: [fio2_set]
+      daily_niv_rr_8a_{d}: [rr]
+      daily_niv_tv_8a_{d}: [tidal_volume_obs]
+      daily_hfnc_flow_8a_{d}: [lpm_set]
+      daily_hfnc_fi02_8a_{d}: [fio2_set]
+      daily_hfnc_rr_8a_{d}: [rr]
+      daily_standard_flow_8a_{d}: [lpm_set]
+      daily_standard_rr_8a_{d}: [rr]
+  at_lowest_spo2:
+    support: daily_resp_lowest_{d}
+    settings:
+      daily_fio2_lowest_{d}: [fio2_set]
+      daily_o2_lowest_{d}: [lpm_set]
+  at_lowest_pao2:
+    support: daily_resp_lowest_pao2_{d}
+    settings:
+      daily_fio2_lowest_pao2_{d}: [fio2_set]
+      daily_o2_lowest_pao2_{d}: [lpm_set]
+
+# Lowest PaO2 of the day (po2_arterial, labs timed by collect time) and the same ABG (identical lab_collect_dttm).
+abg:
+  occurred: daily_pao2_occur_{d}           # yesno: 1 if any PaO2 that day (written only if the cohort has PaO2 at all)
+  lowest_pao2: daily_pa02_lowest_{d}
+  lowest_time: daily_pa02_lowest_time_{d}  # HH:MM site-local
+  same_abg: {"daily_ph_lowest_{d}": ph_arterial, "daily_paco2_lowest_{d}": pco2_arterial, "daily_sao2_lowest_{d}": so2_arterial}
+  spo2_at_time: daily_spo2_lowpao2_{d}     # SpO2 closest to the PaO2 time within spo2_window_minutes
+  spo2_window_minutes: 60
+
+# Vasopressors infusing at the time of the SBP closest to 8am: per drug the last medication_admin_continuous row at
+# or before that time within carry_forward_hours; running unless it is a stop / not_administered action or dose 0.
+vasopressors:
+  carry_forward_hours: 4
+  checkbox: daily_vasopressors_{d}
+  none_code: "0"
+  drugs:
+    norepinephrine: {code: "1", units: "daily_ne_units_8a_{d}",     mcg: "daily_ne_dose_8a_{d}_mcg",     mcgkg: "daily_ne_dose_8a_{d}_mcgkg"}
+    epinephrine:    {code: "2", units: "daily_epi_units_8a_{d}",    mcg: "daily_epi_dose_8a_{d}_mcg",    mcgkg: "daily_epi_dose_8a_{d}_mcgkg"}
+    phenylephrine:  {code: "3", units: "daily_phen_units_8a_{d}",   mcg: "daily_phen_dose_8a_{d}_mcg",   mcgkg: "daily_phen_dos_8a_{d}_mcgkg"}
+    vasopressin:    {code: "4", dose: "daily_vaso_dose_8a_{d}"}
+    dopamine:       {code: "5", units: "daily_dopa_units_8a_{d}",   mcg: "daily_dopa_dose_8a_{d}_mcg",   mcgkg: "daily_dopa_dos_8a_{d}_mcgkg"}
+    dobutamine:     {code: "6", units: "daily_dobuta_units_8a_{d}", mcg: "daily_dobuta_8a_{d}_mcg",      mcgkg: "daily_dobuta_8a_{d}_mcgkg"}
+    angiotensin_ii: {code: "7", units: "daily_ang2_units_8a_{d}",  mcg: "daily_ang2_8a_{d}_mcg",       mcgkg: "daily_ang2_8a_{d}_mcgkg"}
+    milrinone:      {code: "8", units: "daily_milr_units_8a_{d}",   mcg: "daily_milr_8a_{d}_mcg",        mcgkg: "daily_milr_8a_{d}_mcgkg"}
+  unit_codes: {mcg/min: "1", mcg/kg/min: "2"}
+  # dose unit (normalized) -> (REDCap unit, factor)
+  unit_conversions:
+    mcg/min: [mcg/min, 1.0]
+    mcg/kg/min: [mcg/kg/min, 1.0]
+    mcg/hr: [mcg/min, 0.016666666666666666]
+    mcg/kg/hr: [mcg/kg/min, 0.016666666666666666]
+    ng/kg/min: [mcg/kg/min, 0.001]            # angiotensin II (CLIF 3.0 reference unit)
+    mg/hr: [mcg/min, 16.666666666666668]
+    mg/min: [mcg/min, 1000.0]
+    units/min: [units/min, 1.0]
+    units/hr: [units/min, 0.016666666666666666]
+    u/min: [units/min, 1.0]
+    u/hr: [units/min, 0.016666666666666666]
+
+# GCS total closest to 8am; on IMV at that time (respiratory rule above) a total <= 11 is coded as "<total>T"
+# (REDCap code total + 13: 3T = 16 ... 11T = 24). No GCS that day -> 99 "not documented" when the cohort has GCS.
+gcs:
+  field: daily_gcs_8a_{d}
+  clif: gcs_total
+  intubated_offset: 13
+  not_documented: "99"
+
+# Nutrition around 8am (CLIF 3.0 input table, optional): oral = po_intake, TPN = parenteral_nutrition input or a
+# running tpn infusion, within +-window_hours of 08:00. Tube feeding full vs trophic, "none", "other", "unknown"
+# are left for chart review. A box is written 0 only when the cohort has that input category at all.
+nutrition:
+  checkbox: daily_nutrition_8a_{d}
+  window_hours: 4
+  oral: {code: "1", input_category: po_intake}
+  tpn: {code: "4", input_category: parenteral_nutrition, med_category: tpn}

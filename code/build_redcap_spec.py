@@ -4,7 +4,8 @@
 
 Input : config/redcap/daily_assessment_codebook_day_m2.csv  (tab `daily_assessment_codebook` of the
         APS_to_CLIF Google Sheet; columns: #, [variable] + branching logic, label, type/validation)
-Output: config/redcap/daily_fields.csv  one row per field template, with `{d}` where the day suffix goes.
+Output: config/redcap/daily_fields.csv  one row per field template, with `{d}` where the day suffix goes, plus one
+        row per checkbox option (<field>___<code>, the REDCap import column). `section` is the form section header.
 
 The day -2 instrument is the template: every `m2` token in a variable name becomes `{d}`. The suffix is not
 always at the end (e.g. daily_ne_dose_8a_m2_mcg), so names are never built by appending a suffix.
@@ -44,18 +45,23 @@ def main():
         raise SystemExit(f"{CODEBOOK.relative_to(ROOT)} not found: export the codebook tab as CSV there first (see README)")
     cb = pd.read_csv(CODEBOOK, header=None, dtype=str).fillna("")
     rows = []
+    section = "Availability"
     for _, r in cb.iterrows():
         m = VAR.match(r[1])
         if not m:
             continue
         name = m.group(1)
         ftype, validation, vmin, vmax, choices = parse_type(r[3])
-        if ftype == "descriptive" or name.endswith("_complete"):
+        if ftype == "descriptive":
+            if name.startswith("sofa_div"):
+                section = r[2].strip()
+            continue
+        if name.endswith("_complete"):
             continue
         if not DAY_TOKEN.search(name):
             raise SystemExit(f"{name}: no '{TEMPLATE_DAY}' day token; cannot template it")
         branching = r[1][m.end():].replace("Show the field ONLY if:", "").strip()
-        rows.append({
+        row = {
             "field_template": DAY_TOKEN.sub("{d}", name),
             "field_type": ftype,
             "validation": validation,
@@ -63,7 +69,14 @@ def main():
             "max": vmax,
             "choice_codes": choices,
             "branching_logic": DAY_TOKEN.sub("{d}", branching),
-        })
+            "section": section,
+            "parent": "",
+        }
+        rows.append(row)
+        if ftype == "checkbox":  # REDCap imports one column per option: <field>___<code>, values 0/1
+            for code in choices.split("|"):
+                rows.append({**row, "field_template": f"{row['field_template']}___{code}", "field_type": "checkbox_option",
+                             "choice_codes": "0|1", "parent": row["field_template"]})
     spec = pd.DataFrame(rows)
     spec.to_csv(SPEC, index=False)
     print(f"wrote {SPEC.relative_to(ROOT)}: {len(spec)} field templates")

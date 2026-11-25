@@ -25,3 +25,6 @@ config/real.json
 # APS REDCap codebook is not published: download it locally (see README) and build the spec
 config/redcap/daily_assessment_codebook*.csv
 config/redcap/daily_fields.csv
+
+# CRF inventory from the APS_to_CLIF crosswalk (CRF item labels; not published)
+config/redcap/crf_elements*.csv

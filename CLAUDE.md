@@ -21,6 +21,9 @@ Tool (bulk upload, no API). Built with `clifpy`, run with `uv`.
 - `uv run python code/build_redcap_spec.py` — codebook export → `config/redcap/daily_fields.csv` (rerun if the codebook changes)
 - `uv run python code/run_aps.py --config config/demo.json` — REDCap upload CSV + aggregate run summary
 - `uv run python code/verify_aps.py --config config/demo.json` — independent recomputation + import checks; exit 1 on failure
+- `uv run python code/test_synthetic.py` then `uv run python code/test_mutations.py` — scenario test + mutation test
+- `uv run python code/crf_coverage.py` — whole-CRF coverage from the local crosswalk inventory (gitignored)
+- Per-run coverage / manual-extraction summary: `output/summary/coverage_<label>.csv`
 - Legacy, superseded by `run_aps.py`: `code/00_setup.ipynb`, `code/01_daily_assessment.ipynb`, `config/daily_assessment_mapping.yaml`
 
 ## REDCap target (source of truth: `APS_to_CLIF` Google Sheet, tab `daily_assessment_codebook`)
@@ -32,4 +35,6 @@ Tool (bulk upload, no API). Built with `clifpy`, run with `uv`.
 - Lab "not collected" fields (`daily_<lab>_nc_<d>`) are radio, code `1` = Not Collected (not checkboxes).
 - Gate field `dailysofa_perf_<d>`: 1 Available / 0 Not Available; every other field is branched on it.
 - Integer-validated fields (e.g. hgb, hct, platelets, Na, HCO3, BUN, glucose) must be rounded or the import fails.
+- Checkbox fields import as one column per option, `<field>___<code>` (0/1); the spec has a row per option.
+- Branching logic is applied from the codebook (`code/redcap_branching.py`); never write a field the form hides.
 - No daily data for days after hospital discharge.
